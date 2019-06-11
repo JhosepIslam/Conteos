@@ -421,7 +421,7 @@ public class ParcialesFragment extends Fragment {
                         , parciales.getINICIO(), parciales.getFIN(), parciales.getCICLO(), R.layout.cardview_parciales, new ParcialesAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int ID_Fecha_Parcial, int Ciclo, int position) {
-                        Toast.makeText(getContext(),"Hola"+ID_Fecha_Parcial+" "+Ciclo,Toast.LENGTH_LONG).show();
+
                         changeFragment(new DiaHoraParcial_Fragment(),"Fechas_Parcial",ID_Fecha_Parcial,Ciclo);
                     }
                 }, new ParcialesAdapter.OnLongItemClickListener() {

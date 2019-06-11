@@ -127,6 +127,7 @@
                 <EditText
                     android:id="@+id/txtContraseñaNueva_Edit"
                     android:textColor="#fff"
+                    android:inputType="textPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Contraseña Nueva"
@@ -134,6 +135,7 @@
                 <EditText
                 android:id="@+id/txtContraseñaNuevaRepetir_Edit"
                 android:textColor="#fff"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Repetir Contraseña "

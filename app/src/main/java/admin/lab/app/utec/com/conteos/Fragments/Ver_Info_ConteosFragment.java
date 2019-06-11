@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import admin.lab.app.utec.com.conteos.Models.Facultades;
 import admin.lab.app.utec.com.conteos.R;
 
 
@@ -16,7 +17,7 @@ import admin.lab.app.utec.com.conteos.R;
  */
 public class Ver_Info_ConteosFragment extends Fragment {
 
-
+    Facultades facultades = new Facultades();
     public Ver_Info_ConteosFragment() {
         // Required empty public constructor
     }
@@ -28,7 +29,13 @@ public class Ver_Info_ConteosFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ver__info__conteos, container, false);
     }
-
+    public class Async_get_Facultades extends AsyncTask<Void,Void,Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            facultades.getFacultadesConIDFromServer();
+            return null;
+        }
+    }
 
     public class Async_get_Clases extends AsyncTask<Void,Void,Boolean> {
 

@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import admin.lab.app.utec.com.conteos.Models.Facultades;
 import admin.lab.app.utec.com.conteos.Models.Insertar_Usuario;
 import admin.lab.app.utec.com.conteos.Models.Laboratorios;
@@ -40,7 +42,7 @@ public class AgreagarUsuarioFragment extends Fragment {
     Facultades facultades = new Facultades();
     private EditText txtNombre,txtApellido,txtUsuario,txtClaveUser,txtClaveComprobar,txtCarnet,txtCodigoEmpleado;
     private TextView textViewLab;
-    private CheckBox checkBoxNoLab;
+
     private Spinner spNivel,spFacultad,spLab;
     private LinearLayout linearLayout,linearLayoutFacultad;
     private int nivel;
@@ -83,7 +85,7 @@ public class AgreagarUsuarioFragment extends Fragment {
          spFacultad = getView().findViewById(R.id.spinnerFacultadUser);
          txtNombre= getView().findViewById(R.id.txtNombreUsuario);
          txtCarnet= getView().findViewById(R.id.txtCarnetUsuario);
-         checkBoxNoLab = getView().findViewById(R.id.checkboxNoLabUsuario);
+
          linearLayout=getView().findViewById(R.id.LLFacultad_Usuario);
          txtApellido= getView().findViewById(R.id.txtApellidoUsuario);
          linearLayoutFacultad= getView().findViewById(R.id.LLFacultad_Usuario);
@@ -109,16 +111,7 @@ public class AgreagarUsuarioFragment extends Fragment {
             txtUsuario.setClickable(false);
         }
 
-        checkBoxNoLab.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    linearLayout.setVisibility(View.GONE);
-                }else {
-                    linearLayout.setVisibility(View.GONE);
-                }
-            }
-        });
+
 
          txtCarnet.addTextChangedListener(new TextWatcher() {
              @Override
@@ -152,9 +145,9 @@ public class AgreagarUsuarioFragment extends Fragment {
                              txtUsuario.setFocusable(false);
                              txtCodigoEmpleado.setVisibility(View.GONE);
                              txtUsuario.setFocusableInTouchMode(false);
-                             checkBoxNoLab.setVisibility(View.VISIBLE);
+
                              txtUsuario.setClickable(false);
-                             checkBoxNoLab.setVisibility(View.GONE);
+
                              break;
                          case "ADMIN_LAB" :
                              txtUsuario.setText("");
@@ -162,8 +155,24 @@ public class AgreagarUsuarioFragment extends Fragment {
                              textViewLab.setVisibility(View.VISIBLE);
                              spLab.setVisibility(View.VISIBLE);
                              linearLayout.setVisibility(View.VISIBLE);
-                             checkBoxNoLab.setVisibility(View.VISIBLE);
+
                              txtUsuario.setFocusable(true);
+                             txtCodigoEmpleado.setVisibility(View.GONE);
+                             txtUsuario.setFocusableInTouchMode(true);
+                             txtUsuario.setClickable(true);
+                             linearLayout.setVisibility(View.VISIBLE);
+
+
+                             break;
+                         case "SECRETARIA" :
+                             txtUsuario.setText("");
+                             txtCarnet.setVisibility(View.GONE);
+                             textViewLab.setVisibility(View.VISIBLE);
+                             spLab.setVisibility(View.VISIBLE);
+                             linearLayout.setVisibility(View.VISIBLE);
+
+                             txtUsuario.setFocusable(true);
+                             linearLayout.setVisibility(View.GONE);
                              txtCodigoEmpleado.setVisibility(View.GONE);
                              txtUsuario.setFocusableInTouchMode(true);
                              txtUsuario.setClickable(true);
@@ -175,7 +184,7 @@ public class AgreagarUsuarioFragment extends Fragment {
                              txtUsuario.setFocusableInTouchMode(true);
                              txtUsuario.setClickable(true);
                              txtUsuario.setText("");
-                             checkBoxNoLab.setVisibility(View.GONE);
+
                              txtCarnet.setVisibility(View.GONE);
                              textViewLab.setVisibility(View.GONE);
                              spLab.setVisibility(View.GONE);
@@ -186,7 +195,7 @@ public class AgreagarUsuarioFragment extends Fragment {
                              txtUsuario.setFocusableInTouchMode(true);
                              txtUsuario.setClickable(true);
                              txtUsuario.setText("");
-                             checkBoxNoLab.setVisibility(View.GONE);
+
                              txtCodigoEmpleado.setVisibility(View.GONE);
                              txtCarnet.setVisibility(View.GONE);
                              textViewLab.setVisibility(View.GONE);
@@ -234,6 +243,7 @@ public class AgreagarUsuarioFragment extends Fragment {
                             }
                             break;
                         case "INSTRUCTOR":
+                        case "SECRETARIA":
                         case "ADMIN_LAB":
                             Lab = spLab.getSelectedItem().toString();
                             if (ComprobarDatosNulos()){
@@ -245,8 +255,9 @@ public class AgreagarUsuarioFragment extends Fragment {
                                     if (!util.ValidarCorreo(Usuario)){
                                         txtUsuario.setError("Nombre de Usuario  no Valido");
                                     }else {
-                                        if (checkBoxNoLab.isChecked()){
+                                        if (Nivel.equals("SECRETARIA")){
                                             Lab="";
+                                            Nivel = "ADMIN_LAB";
                                         }
                                         SetAsync setAsync = new SetAsync(Nombre,Apellido,Usuario,
                                                 Contraseña,Nivel,Facultad,Lab,true);
@@ -419,7 +430,10 @@ public class AgreagarUsuarioFragment extends Fragment {
             super.onPostExecute(aBoolean);
 
             try{
-                final ArrayAdapter spinnerAdapterNiveles = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, niveles.getNiveles());
+                ArrayList nivel;
+                nivel =  niveles.getNiveles();
+                nivel.add("SECRETARIA");
+                final ArrayAdapter spinnerAdapterNiveles = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,nivel);
                 final ArrayAdapter spinnerAdapterFacultades = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, facultades.getFacultad());
                 final ArrayAdapter spinnerAdapterLaboratorios = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, laboratorios.getLaboratorio());
                 spNivel.setAdapter(spinnerAdapterNiveles);

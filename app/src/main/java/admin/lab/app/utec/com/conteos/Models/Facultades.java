@@ -100,10 +100,48 @@ public class Facultades {
             {
                 JSONObject v = obtener.getJSONObject(i);
                 String nombre =v.getString("NOMBRE");
-                Log.d("res",nombre);
+                String id =v.getString("ID_FACULTAD");
                 if (!nombre.isEmpty() && nombre !=null){
                     //setNOMBRE(nombre);
                     list.add(nombre);
+                }
+            }
+            setFacultad(list);
+        }catch (Exception ex){
+            Log.d("Error",ex.getMessage());
+        }
+
+    }
+
+    public void getFacultadesConIDFromServer(){
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        String resultado;
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try{
+            transport.call(SOAP_ACTION,envelope);
+            SoapPrimitive respSoap=(SoapPrimitive) envelope.getResponse();
+
+            resultado=respSoap.toString();
+            JSONObject jsonObj = new JSONObject(resultado);
+            JSONArray obtener = jsonObj.getJSONArray("Table");
+
+            int a=obtener.length();
+            ArrayList list = new ArrayList<String>() ;
+
+            for (int i = 0; i < a; i++)
+            {
+                JSONObject v = obtener.getJSONObject(i);
+                String nombre =v.getString("NOMBRE");
+                String id =v.getString("ID_FACULTAD");
+                if (!nombre.isEmpty() && nombre !=null){
+                    //setNOMBRE(nombre);
+                    list.add(id+" "+nombre);
                 }
             }
             setFacultad(list);
