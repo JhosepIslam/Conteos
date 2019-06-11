@@ -15,7 +15,7 @@ import admin.lab.app.utec.com.conteos.R;
 public class ClasesInfoAdapter extends RecyclerView.Adapter<ClasesInfoAdapter.ViewHolder> {
 
     private ArrayList Materia,Aula,Docente,Horas,Dias,Seccion,Id_clase,Inscritos;
-    ArrayList cantiadad_contada;
+    private ArrayList cantiadad_contada;
     private ClasesInfoAdapter.OnItemClickListener itemClickListener;
     private int layout;
 
