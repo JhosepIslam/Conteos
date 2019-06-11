@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+    <TextView
+        android:id="@+id/textViewParcial_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="#FFFF"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/textViewInicioParcial_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha de Inicio"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            android:textColor="#FFFF"
+            android:shadowColor="#ffff"/>
+        <TextView
+            android:layout_weight="2"
+            android:id="@+id/textViewFinParcial_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha Finalizacion"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            android:textColor="#FFFF"
+            android:shadowColor="#ffff"/>
+
+        <TextView
+            android:layout_weight="2"
+            android:id="@+id/textViewPArcial_Ciclo_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activo - Inactivo"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            android:textColor="#FFFF"
+            android:shadowColor="#ffff"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="EDITAR"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="15dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <CheckBox
+                android:id="@+id/checkboxEditCiclo_Parcial_dialog"
+                android:layout_width="155dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ciclo"
+                android:textColor="#FFF" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:layout_gravity="center"
+                android:id="@+id/checkboxEditFechaInicioParcial_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=" Fecha de Inicio"
+                android:textColor="#FFF" />
+            <CheckBox
+                android:layout_gravity="center"
+                android:id="@+id/checkboxEditFechaFinParcial_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=" Fecha de Finalizacion"
+                android:textColor="#FFF" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/LLEditCicloParcial"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:textSize="15dp"
+                    android:text="Nuevo Ciclo: "/>
+                <Spinner
+                    android:layout_weight="1"
+                    android:id="@+id/SpinnerNuevoCicloParcial_Edit"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/Ciclos"
+                    />
+
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/LLEditFechaInicioParcial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/txtNuevasFechaInicioParcial_Edit"
+                    android:textColor="#fff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="10"
+                    android:inputType="date"
+                    android:hint="Nuevas Fecha de Inicio: yyyy-MM-dd"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/LLEditFechaFinalParcial"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/txtNuevasFechaFinParcial_Edit"
+                        android:textColor="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:maxLength="10"
+                        android:hint="Nuevas Fecha de Finalización: yyyy-MM-dd"
+                        />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnEnviarParcial_dialog"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#fff"
+            android:layout_height="wrap_content"
+            android:text="Enviar"/>
+        <Button
+            android:id="@+id/btnCacelarParcial_dialog"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#fff"
+            android:layout_weight="2"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"/>
+    </LinearLayout>
+</LinearLayout>

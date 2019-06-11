@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_Home"
+            android:icon="@drawable/ic_home"
+            android:title="Home"
+            />
+        <item
+            android:id="@+id/nav_Perfil"
+            android:icon="@drawable/ic_Perfil"
+            android:title="Ver Perfil"
+            />
+        <item
+            android:id="@+id/nav_Usuarios"
+            android:icon="@drawable/ic_User"
+            android:title="Usuarios"
+            />
+        <item
+            android:id="@+id/nav_AgregarConteo"
+            android:icon="@drawable/ic_Conteo"
+            android:title="Agregar Conteo"
+            />
+        <item
+            android:id="@+id/nav_AgregarUSuarios"
+            android:icon="@drawable/ic_User_add"
+            android:title="Agregar Usuario"/>
+
+        <item
+            android:id="@+id/nav_Clases"
+            android:icon="@drawable/ic_Clases"
+            android:title="Clases"/>
+        <item
+            android:id="@+id/nav_AgregarEdificio"
+            android:icon="@drawable/ic_edif"
+            android:title="Edificios"/>
+
+        <item
+            android:id="@+id/nav_Ciclos"
+            android:icon="@drawable/ic_Ciclo"
+            android:title="Ciclos"/>
+        <item
+            android:id="@+id/nav_Parciales"
+            android:icon="@drawable/ic_Fecha"
+            android:title="Parciales"/>
+
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_session"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="Cerrar Sesión" />
+    </group>
+
+
+
+</menu>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingrese Asistencia"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:layout_gravity="center"/>
+        <EditText
+            android:id="@+id/txtAsistencia"
+            android:hint="Ingrese La Cantidad"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+
+        <CheckBox
+            android:id="@+id/checkboxSinAsistencia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:textColor="#fff"
+            android:text="Sin Asistencia" />
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/radio1"
+                android:textColor="#fff"
+                android:text="No llegó Docente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:textColor="#fff"
+                android:id="@+id/radio2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:textColor="#fff"
+                android:id="@+id/radio3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:textColor="#fff"
+                android:id="@+id/radio4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:textColor="#fff"
+                android:id="@+id/radio5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:textColor="#fff"
+                android:id="@+id/radio6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:textColor="#fff"
+                android:id="@+id/radio7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:textColor="#fff"
+                android:id="@+id/radio8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+            <EditText
+                android:id="@+id/txtSelecHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Seleccione Hora"
+                android:textColor="#FFF"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textSize="20dp"
+                android:inputType="time"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/txtComentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Comentario"
+                android:inputType="textMultiLine"
+                android:visibility="gone"/>
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_margin="5dp"
+                android:id="@+id/btnCancel_alert"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="Cancelar"
+                android:textColor="#fff" />
+            <Button
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#fff"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/btncSave_alert"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Guardar"/>
+
+        </LinearLayout>
+
+</LinearLayout>
