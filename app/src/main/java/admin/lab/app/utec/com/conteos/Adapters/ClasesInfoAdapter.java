@@ -99,8 +99,6 @@ public class ClasesInfoAdapter extends RecyclerView.Adapter<ClasesInfoAdapter.Vi
         }
 
     }
-
-
     public interface OnItemClickListener{
         void  OnItemClick(int id);
     }
