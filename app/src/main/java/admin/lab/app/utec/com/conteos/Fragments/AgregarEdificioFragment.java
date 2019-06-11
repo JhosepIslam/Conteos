@@ -331,7 +331,7 @@ public class AgregarEdificioFragment extends Fragment {
         }
         @Override
         protected Boolean doInBackground(Void... voids) {
-            result =edificios.setEdificio(nombre,num_p,num_au);
+            result =edificios.setEdificio(nombre,num_p,num_au,usuario_);
             return true;
         }
 
