@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity
         switch (nivel){
             case 1:
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
-                nav_Menu.findItem(R.id.nav_EditarAulaClase).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
@@ -216,14 +216,14 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 3:
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
-                nav_Menu.findItem(R.id.nav_EditarAulaClase).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);
                 break;
             case 4:
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
-                nav_Menu.findItem(R.id.nav_EditarAulaClase).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 5:
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
-                nav_Menu.findItem(R.id.nav_EditarAulaClase).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);

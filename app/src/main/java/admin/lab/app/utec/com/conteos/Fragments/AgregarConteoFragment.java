@@ -628,8 +628,10 @@ public class AgregarConteoFragment extends Fragment {
             super.onPostExecute(aBoolean);
             if (resp){
                 Toast.makeText(getContext(),"Se Actualizó el conteo",Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
             }else {
                 Toast.makeText(getContext(),"No se Actualizó el conteo",Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
             }
             Async_get_Clases async_get_clases = new Async_get_Clases(edif,hora);
             async_get_clases.execute();

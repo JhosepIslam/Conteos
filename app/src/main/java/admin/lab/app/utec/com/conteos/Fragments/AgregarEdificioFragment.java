@@ -59,8 +59,13 @@ public class AgregarEdificioFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agregar_edifcio, container, false);
         // Inflate the layout for this fragment
-        usuario_= getArguments().getString("usuario");
-        nivel_= getArguments().getString("nivel");
+        try {
+            usuario_= getArguments().getString("usuario");
+            nivel_= getArguments().getString("nivel");
+        }catch (Exception ex){
+            usuario_="";
+        }
+
         return view;
     }
 
@@ -408,7 +413,10 @@ public class AgregarEdificioFragment extends Fragment {
 
         String Nombre;
         int Aulas,Pisos,ID,caso;
-        ProgressDialog pDialog;
+        boolean r1=false;
+        boolean r2;
+        boolean r3;
+
 
         public AsyncUpdate(String Nombre, int Aulas , int Pisos, int ID, int Caso){
             this.Aulas=Aulas;
@@ -421,11 +429,7 @@ public class AgregarEdificioFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(getContext());
-            pDialog.setMessage("Actualizando");
-            pDialog.setCancelable(true);
-            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pDialog.show();
+
         }
 
         @Override
@@ -433,33 +437,40 @@ public class AgregarEdificioFragment extends Fragment {
 
             switch (caso){
                 case 0:
-                    edificios.UpdateAulas(Aulas,usuario_,ID);
-                    edificios.UpdateNombre(Nombre,usuario_,ID);
-                    edificios.UpdatePisos(Pisos,usuario_,ID);
+                    r1=edificios.UpdateAulas(Aulas,usuario_,ID);
+                    r2=edificios.UpdateNombre(Nombre,usuario_,ID);
+                    r3=edificios.UpdatePisos(Pisos,usuario_,ID);
+
                     break;
                 case 1:
-                    edificios.UpdateAulas(Aulas,usuario_,ID);
-                    edificios.UpdateNombre(Nombre,usuario_,ID);
+                    r1=edificios.UpdateAulas(Aulas,usuario_,ID);
+                    r2=edificios.UpdateNombre(Nombre,usuario_,ID);
+
                     break;
                 case 2:
-                    edificios.UpdateAulas(Aulas,usuario_,ID);
-                    edificios.UpdatePisos(Pisos,usuario_,ID);
+                   r1=edificios.UpdateAulas(Aulas,usuario_,ID);
+                   r2=edificios.UpdatePisos(Pisos,usuario_,ID);
+
                     break;
                 case 3:
-                    edificios.UpdateNombre(Nombre,usuario_,ID);
-                    edificios.UpdatePisos(Pisos,usuario_,ID);
+                   r1= edificios.UpdateNombre(Nombre,usuario_,ID);
+                   r2= edificios.UpdatePisos(Pisos,usuario_,ID);
+
                     break;
                 case 4:
-                    edificios.UpdateAulas(Aulas,usuario_,ID);
+                    r1= edificios.UpdateAulas(Aulas,usuario_,ID);
 
                     break;
                 case 5:
-                    edificios.UpdateNombre(Nombre,usuario_,ID);
+                    r1= edificios.UpdateNombre(Nombre,usuario_,ID);
 
                     break;
                 case 6:
-                    edificios.UpdatePisos(Pisos,usuario_,ID);
+                    r1= edificios.UpdatePisos(Pisos,usuario_,ID);
                     break;
+            }
+            if (r1){
+
             }
             return null;
         }
@@ -467,7 +478,11 @@ public class AgregarEdificioFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            pDialog.dismiss();
+            if (r1 || r2 || r3){
+                Toast.makeText(getContext(),"Se Actualizo el Edificio",Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getContext(),"NO Se Actualizo el Edificio",Toast.LENGTH_SHORT).show();
+            }
             AsyncGet asyncGet = new AsyncGet();
             asyncGet.execute();
         }
