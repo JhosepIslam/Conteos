@@ -181,7 +181,7 @@ public class Edificios {
 
     }
 
-    public int setEdificio(String nombre, int pisos, int aulas){
+    public int setEdificio(String nombre, int pisos, int aulas, String usuario){
         METHOD_NAME="InsertarEdificio";
         SOAP_ACTION="http://apoyo.conteoutec.org/InsertarEdificio";
 
@@ -193,6 +193,7 @@ public class Edificios {
         request.addProperty("Nombre",nombre);
         request.addProperty("Num_plantas",pisos);
         request.addProperty("num_aulas",aulas);
+        request.addProperty("usuario",usuario);
 
         envelope.dotNet=true;
         envelope.bodyOut=request;
