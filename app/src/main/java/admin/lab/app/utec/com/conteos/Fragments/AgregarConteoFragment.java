@@ -59,8 +59,8 @@ public class AgregarConteoFragment extends Fragment {
     ArrayList faltas = new ArrayList();
     private RecyclerView recyclerView;
     private RecyclerView.Adapter myAdapter;
-     AlertDialog alertDialog;
     private RecyclerView.LayoutManager layoutManager;
+    AlertDialog alertDialog;
     EditText txtAsistencia;
     ShimmerFrameLayout shimmerFrameLayout;
     int ID_ASISTENCIA;

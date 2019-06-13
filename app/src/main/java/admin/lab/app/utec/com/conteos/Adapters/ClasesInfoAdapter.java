@@ -50,7 +50,7 @@ public class ClasesInfoAdapter extends RecyclerView.Adapter<ClasesInfoAdapter.Vi
         viewHolder.bind(Integer.parseInt(Id_clase.get(i).toString()),Materia.get(i).toString(),
                 Docente.get(i).toString(),Aula.get(i).toString(),Horas.get(i).toString(),Dias.get(i).toString(),
                 Seccion.get(i).toString(),Integer.parseInt(Inscritos.get(i).toString()),
-                Integer.parseInt(cantiadad_contada.get(i).toString()), itemClickListener);
+                cantiadad_contada.get(i).toString(), itemClickListener);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ClasesInfoAdapter extends RecyclerView.Adapter<ClasesInfoAdapter.Vi
         }
 
         public  void  bind(final int id, String Materia, String Docente, String Aula , String Hora, String Dias , String Seccion
-        , int Inscritos, int Cantidad_Contada, final OnItemClickListener listener){
+        , int Inscritos, String Cantidad_Contada, final OnItemClickListener listener){
             this.txtMateria.setText("Materia: "+Materia);
             this.txtAula.setText("Aula: "+Aula);
             this.txtDocente.setText("Docente: "+Docente);

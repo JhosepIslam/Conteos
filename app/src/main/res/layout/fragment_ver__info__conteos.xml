@@ -23,6 +23,7 @@
                 android:textSize="20dp"
                 android:text="Fecha :"/>
             <EditText
+                android:id="@+id/txtFiltroFecha"
                 android:layout_weight="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -33,10 +34,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:text="Hora :"/>
+
             <EditText
-                android:layout_weight="1.5"
+                android:id="@+id/txtFiltroHora"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,6 +50,7 @@
                 android:textSize="20dp"
                 android:text="Facultad: "/>
             <Spinner
+                android:id="@+id/spinnerFacultadFiltro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></Spinner>
         </LinearLayout>
@@ -59,6 +63,7 @@
                 android:textSize="20dp"
                 android:text="Tipo: "/>
             <Spinner
+                android:id="@+id/spinnerTipoFiltro"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
