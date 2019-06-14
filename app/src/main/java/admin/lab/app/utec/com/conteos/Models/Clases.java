@@ -367,7 +367,7 @@ public class Clases {
             Log.d("error",ex.getMessage());
         }
     }
-    public void  Get_All_Conteo(){
+    public void  Get_All_Conteo(String  Hora){
 
         METHOD_NAME="Get_ALL_CONTEOSJSON";
         SOAP_ACTION="http://apoyo.conteoutec.org/Get_ALL_CONTEOSJSON";
@@ -377,6 +377,7 @@ public class Clases {
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         String resultado;
         SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("hora",Hora);
         envelope.dotNet=true;
         envelope.bodyOut=request;
         envelope.setOutputSoapObject(request);

@@ -1,8 +1,10 @@
 
 package admin.lab.app.utec.com.conteos.Activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
@@ -28,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,10 +136,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }else if (mPasswordView.getText().toString().trim().isEmpty()){
             mPasswordView.setError("Se requiere una Contraseña");
         }
-        else if (!isPasswordValid(mPasswordView.getText().toString().trim()))
-        {
-            mPasswordView.setError("Contraseña no valida ");
-        }else {
+        else {
             login.setUsuario(mEmailView.getText().toString());
             login.setPass(mPasswordView.getText().toString());
             AsyncWS asyncWS = new AsyncWS();
@@ -251,12 +251,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     public  class  AsyncWS extends  AsyncTask<Void,Void,Boolean>{
-
+        int resul;
         @Override
         protected Boolean doInBackground(Void... voids) {
 
-            int resul= login.login();
-            if (resul!=-1){
+            resul= login.login();
+            if (resul!=-1 && resul !=-2){
                 Nivel=resul;
                 flag=true;
                 return true;
@@ -273,22 +273,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-
+                if (resul==-2){
+                    Toast.makeText(getApplicationContext(),"No se Puede Recordar Iniciar Con este Codigo",Toast.LENGTH_SHORT).show();
+                }
                 if (flag) {
                     String thiPass = login.getPass();
                     String thisUser = login.getUsuario();
                     if (recordar.isChecked()){
-                        saveOnPreferences(thisUser, thiPass);
+
+                        if (Nivel == 4 && thiPass.equals(thisUser)){
+                            Toast.makeText(getApplicationContext(),"No se Puede Recordar En Este Momento",Toast.LENGTH_SHORT).show();
+                        }else {
+                            saveOnPreferences(thisUser, thiPass);
+                        }
+                    }if(Nivel ==4 && thiPass.equals(thisUser)){
+                        Intent intent = new Intent(getApplicationContext(), AutoRegistrationActivity.class);
+                        intent.putExtra("codigo", thisUser);
+                        intent.putExtra("level",  ""+Nivel);
+                        startActivity(intent);
+
+                    }else {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("name", thisUser);
+                        intent.putExtra("level",  ""+Nivel);
+                        intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                     }
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("name", thisUser);
-                    intent.putExtra("level",  ""+Nivel);
-                    intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
                 }else {
-
-
                     Snackbar.make(login.getView(), "Usuario o contraseña invalido", Snackbar.LENGTH_LONG)
                             .show();
                     mPasswordView.setText("");

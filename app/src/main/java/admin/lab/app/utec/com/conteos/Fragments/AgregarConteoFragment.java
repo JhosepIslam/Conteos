@@ -494,7 +494,7 @@ public class AgregarConteoFragment extends Fragment {
             }else {
                 clases.Get_Clases_FromServer(edifio, hora,usuario_,nivel_);
             }
-            clases.Get_All_Conteo();
+            clases.Get_All_Conteo(hora);
             clases.Get_Faltas_fromServer();
             try {
                 Thread.sleep(2000);
