@@ -245,6 +245,7 @@ public class Usuarios {
         A_Clave="";
         A_Facultad="";
         A_Nivel="";
+        A_Lab="";
 
         try {
             transport.call(SOAP_ACTION, envelope);

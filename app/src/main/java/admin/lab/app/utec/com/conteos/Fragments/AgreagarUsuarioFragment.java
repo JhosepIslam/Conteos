@@ -328,7 +328,6 @@ public class AgreagarUsuarioFragment extends Fragment {
         return dialog;
 
     }
-    //comprobar campos vacios
 
     private boolean CompobarDatosNulosInstructor(){
         if (txtNombre.getText().toString().trim().isEmpty()){

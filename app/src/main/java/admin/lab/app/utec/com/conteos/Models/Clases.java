@@ -514,8 +514,6 @@ public class Clases {
             return false;
         }
     }
-
-
     public void  Get_conteo_fromServer(int id){
 
         METHOD_NAME="Get_Conteo_ifExistJSON";
@@ -554,7 +552,6 @@ public class Clases {
             Log.d("Error",ex.getMessage());
         }
     }
-
     public boolean Update_conteo(int id_asitencia, String Nuevo_usuario,int Nueva_cantida){
 
         METHOD_NAME="Actualizar_Conteo";
@@ -584,7 +581,6 @@ public class Clases {
             return false;
         }
     }
-
     public void  Get_Clases_Contadas_FromServer(String Fecha, String Hora,String Facultad){
         int facultad_id=Integer.parseInt(Facultad.substring(0,1));
         HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
@@ -688,10 +684,6 @@ public class Clases {
             Log.d("error",ex.getMessage());
         }
     }
-
-
-
-
     public void  Get_Clases_Sin_Contar_FromServer(String Fecha, String Hora,String Facultad){
         int facultad_id=Integer.parseInt(Facultad.substring(0,1));
         HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
@@ -795,8 +787,6 @@ public class Clases {
             Log.d("error",ex.getMessage());
         }
     }
-
-
     public void  Get_Clases_Con_Falta_FromServer(String Fecha, String Hora,String Facultad){
         int facultad_id=Integer.parseInt(Facultad.substring(0,1));
         HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
@@ -901,4 +891,106 @@ public class Clases {
         }
     }
 
+    public void  Get_Clases__Anteriores_FromServer(String Facultad, String Anio, int Ciclo){
+
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+
+            METHOD_NAME="Get_Clases_Otro_CicloJSON";
+            SOAP_ACTION="http://apoyo.conteoutec.org/Get_Clases_Otro_CicloJSON";
+
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("ciclo",Ciclo);
+        request.addProperty("año",Anio);
+        request.addProperty("facultad",Facultad);
+
+
+
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try {
+            transport.call(SOAP_ACTION, envelope);
+            SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
+            String resultado = respSoap.toString();
+            JSONObject jsonObj = new JSONObject(resultado);
+            JSONArray obtener = jsonObj.getJSONArray("Table");
+            int length =  obtener.length();
+
+            ArrayList IdClases = new ArrayList<String>();
+            ArrayList Materias = new ArrayList<String>();
+            ArrayList Codigo = new ArrayList<String>();
+            ArrayList Docente = new ArrayList<String>();
+            ArrayList Aulas = new ArrayList();
+            ArrayList Edificios = new ArrayList<String>();
+            ArrayList Dias = new ArrayList<String>();
+            ArrayList Secciones = new ArrayList<String>();
+            ArrayList Inscritos = new ArrayList<String>();
+            ArrayList Horas = new ArrayList<String>();
+
+            try {
+                if (length <=0){
+                    ID_CLASES.clear();
+                    MATERIAS.clear();
+                    CODIGO.clear();
+                    DOCENTE.clear();
+                    AULAS.clear();
+                    EDIFICIO.clear();
+                    DIAS.clear();
+                    SECCION.clear();
+                    SECCION.clear();
+                    INCRITOS.clear();
+                    HORA.clear();
+
+                }
+            }catch (Exception ex){}
+
+            for (int i = 0; i < length; i++)
+            {
+                JSONObject v = obtener.getJSONObject(i);
+                String id_clase =v.getString("ID_CLASE");
+                String materia =v.getString("MATERIA");
+                String codigo =v.getString("CODIGO");
+                String docente =v.getString("DOCENTE");
+                String aula = v.getString("NUMERO_AULA");
+                String edificio = v.getString("EDIFICIO");
+                String dia = v.getString("DIA_DIAS");
+                String seccion = v.getString("SECCION");
+                String inscritos = v.getString("NUM_INSCRITOS");
+                String hora_inicio = v.getString("HORA_INICIO");
+                String hora_final = v.getString("HORA_FIN");
+
+                if (!id_clase.isEmpty() && id_clase !=null){
+                    IdClases.add(id_clase);
+                    Materias.add(materia);
+                    Codigo.add(codigo);
+                    Docente.add(docente);
+                    Aulas.add(aula);
+                    Edificios.add(edificio);
+                    Dias.add(dia);
+                    Secciones.add(seccion);
+                    Inscritos.add(inscritos);
+                    Horas.add(hora_inicio.substring(0,5)+"-"+hora_final.substring(0,5));
+
+                }
+                setID_CLASES(IdClases);
+                setMATERIAS(Materias);
+                setCODIGO(Codigo);
+                setDOCENTE(Docente);
+                setAULAS(Aulas);
+                setEDIFICIO(Edificios);
+                setDIAS(Dias);
+                setSECCION(Secciones);
+                setINCRITOS(Inscritos);
+                setHORA(Horas);
+
+            }
+        }
+        catch (Exception ex){
+            Log.d("error",ex.getMessage());
+        }
+    }
 }

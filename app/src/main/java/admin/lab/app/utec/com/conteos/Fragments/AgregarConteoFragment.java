@@ -2,15 +2,8 @@ package admin.lab.app.utec.com.conteos.Fragments;
 
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,7 +36,6 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import admin.lab.app.utec.com.conteos.Adapters.ConteosAdapter;
 import admin.lab.app.utec.com.conteos.Models.Clases;
@@ -73,7 +65,6 @@ public class AgregarConteoFragment extends Fragment {
     TimePickerDialog picker;
     int nivel_;
     String usuario_;
-    public final Calendar c = Calendar.getInstance();
     Clases clases =  new Clases();
     private RadioButton radioButton1;
     private RadioButton radioButton2;
@@ -120,8 +111,6 @@ public class AgregarConteoFragment extends Fragment {
         async_get_clases.execute();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            int Refreshcounter = 1; //Counting how many times user have refreshed the layout
-
             @Override
             public void onRefresh() {
                 if (nivel_==4){
@@ -473,7 +462,6 @@ public class AgregarConteoFragment extends Fragment {
             }catch (Exception ex){}
         }
     }
-
     public class Async_get_Clases extends AsyncTask<Void,Void,Boolean> {
         String edifio,hora;
         public  Async_get_Clases(String edifio, String hora){

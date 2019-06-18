@@ -1,7 +1,5 @@
 package admin.lab.app.utec.com.conteos.Models;
 
-import android.widget.Toast;
-
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -35,7 +33,7 @@ public class Modificaciones {
                 transport.call(SOAP_ACTION, envelope);
                 SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
 
-                return Boolean.parseBoolean(request.toString());
+                return Boolean.parseBoolean(respSoap.toString());
             }
             catch (Exception ex){
                 return false;

@@ -1,9 +1,7 @@
 package admin.lab.app.utec.com.conteos.Activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -18,7 +16,6 @@ import android.widget.Spinner;
 
 import admin.lab.app.utec.com.conteos.Models.Facultades;
 import admin.lab.app.utec.com.conteos.Models.Insertar_Usuario;
-import admin.lab.app.utec.com.conteos.Models.Usuarios;
 import admin.lab.app.utec.com.conteos.R;
 import admin.lab.app.utec.com.conteos.Utils.Util;
 

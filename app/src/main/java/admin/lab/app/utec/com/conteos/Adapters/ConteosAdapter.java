@@ -90,14 +90,20 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
             this.txtDias.setText("Dias:"+Dias);
             this.txtSeccion.setText("Seccion:"+Seccion);
             this.txtIncritos.setText("Inscritos: "+inscritos);
-            int index = ID_materia_contada.indexOf(""+id);
-            if (index != -1){
-                String cant =Cantidad.get(index).toString();
-                this.txtConteo.setText("Ultimo Conteo: "+cant);
+            try {
+                int index = ID_materia_contada.indexOf(""+id);
+                if (index != -1){
+                    String cant =Cantidad.get(index).toString();
+                    this.txtConteo.setText("Ultimo Conteo: "+cant);
+                }
+                else {
+                    this.txtConteo.setText("Ultimo Conteo: -");
+                }
+
+            }catch (Exception ex){
+                this.txtConteo.setText("");
             }
-            else {
-                this.txtConteo.setText("Ultimo Conteo: -");
-            }
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -30,6 +30,7 @@ import admin.lab.app.utec.com.conteos.Fragments.HomeFragment;
 import admin.lab.app.utec.com.conteos.Fragments.ParcialesFragment;
 import admin.lab.app.utec.com.conteos.Fragments.PerfilFragment;
 import admin.lab.app.utec.com.conteos.Fragments.UsuariosFragment;
+import admin.lab.app.utec.com.conteos.Fragments.VerClasesFragment;
 import admin.lab.app.utec.com.conteos.Fragments.Ver_Info_ConteosFragment;
 import admin.lab.app.utec.com.conteos.R;
 
@@ -171,6 +172,11 @@ public class MainActivity extends AppCompatActivity
                 tag="Parciales";
                 transaction=true;
                 break;
+            case R.id.nav_Clases_inf:
+                fragment = new VerClasesFragment();
+                tag="ClasesInfo";
+                transaction=true;
+                break;
         }
         if (transaction){
             changeFragment(fragment,tag);
@@ -211,6 +217,7 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarUSuarios).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarConteo).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
                 break;
             case 2:
                 break;
@@ -220,6 +227,7 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
                 break;
             case 4:
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
@@ -228,6 +236,7 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarUSuarios).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
                 break;
             case 5:
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
@@ -236,6 +245,7 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarUSuarios).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
                 break;
         }
         changeFragment(new HomeFragment(),"Home");
