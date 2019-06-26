@@ -19,8 +19,6 @@ public class Edificios {
     private ArrayList NUM_PLANTAS;
     private ArrayList ID;
 
-    private String Nombre_Nuevo;
-    private int Aulas_,ID_Edificio,Plantas;
 
     Conexion conexion = new Conexion();
 

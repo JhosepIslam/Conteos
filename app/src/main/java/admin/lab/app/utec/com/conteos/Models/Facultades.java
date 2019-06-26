@@ -69,7 +69,6 @@ public class Facultades {
             return id;
 
         }catch (Exception ex){
-            Log.d("Error",ex.getMessage());
             return 0;
         }
 

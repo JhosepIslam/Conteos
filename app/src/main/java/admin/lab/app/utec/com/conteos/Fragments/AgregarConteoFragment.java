@@ -58,9 +58,9 @@ public class AgregarConteoFragment extends Fragment {
     int ID_ASISTENCIA;
     private LinearLayout LLfiltroEdificio;
     Edificios edificios = new Edificios();
-    EditText editTextHoraFiltro;
+
     Button btnSave;
-    private Spinner spinnerEdificios;
+    private Spinner spinnerEdificios,spinnerHoras;
     SwipeRefreshLayout swipeRefreshLayout;
     TimePickerDialog picker;
     int nivel_;
@@ -96,10 +96,9 @@ public class AgregarConteoFragment extends Fragment {
         shimmerFrameLayout = getView().findViewById(R.id.shimmerLayoutConteo);
         swipeRefreshLayout = getView().findViewById(R.id.refreshLayout);
         spinnerEdificios = getView().findViewById(R.id.spEdificioConteoFiltro);
-        editTextHoraFiltro = getView().findViewById(R.id.txtHoraContFiltro);
+        spinnerHoras = getView().findViewById(R.id.txtHoraContFiltro);
         LLfiltroEdificio = getView().findViewById(R.id.LLFiltroEdificioClases);
-        editTextHoraFiltro.setInputType(InputType.TYPE_NULL);
-        editTextHoraFiltro.setText("6:30");
+
 
         if (nivel_==4){
             LLfiltroEdificio.setVisibility(View.GONE);
@@ -114,71 +113,57 @@ public class AgregarConteoFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (nivel_==4){
-                    Async_get_Clases async_get_clases = new Async_get_Clases(usuario_,editTextHoraFiltro.getText().toString().trim());
+                    Async_get_Clases async_get_clases = new Async_get_Clases(usuario_,spinnerHoras.getSelectedItem().toString().trim());
                     async_get_clases.execute();
                 }else {
 
-                    String edi=spinnerEdificios.getSelectedItem().toString().trim();
-                    Async_get_Clases async_get_clases = new Async_get_Clases(edi,editTextHoraFiltro.getText().toString().trim());
-                    async_get_clases.execute();
+                    try {
+                        String edi=spinnerEdificios.getSelectedItem().toString().trim();
+                        Async_get_Clases async_get_clases = new Async_get_Clases(edi,spinnerHoras.getSelectedItem().toString().trim());
+                        async_get_clases.execute();
+                    }catch (Exception ex){
+
+                    }
+
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        editTextHoraFiltro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar cldr = Calendar.getInstance();
-                int hour = cldr.get(Calendar.HOUR_OF_DAY);
-                int minutes = cldr.get(Calendar.MINUTE);
-                // time picker dialog
-                picker = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                if (sMinute <= 9){
-                                    editTextHoraFiltro.setText(sHour + ":0" + sMinute);
-                                }else
-                                    editTextHoraFiltro.setText(sHour + ":" + sMinute);
-                            }
-                        }, hour, minutes, true);
-                picker.show();
-            }
-        });
-        editTextHoraFiltro.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (nivel_!=4){
-                    String item = spinnerEdificios.getSelectedItem().toString();
-                    String hora =editTextHoraFiltro.getText().toString();
-                    Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
-                    async_get_clases.execute();
-                }else {
-                    String hora =editTextHoraFiltro.getText().toString();
-                    Async_get_Clases async_get_clases = new Async_get_Clases(usuario_,hora);
-                    async_get_clases.execute();
-                }
-
-            }
-        });
-
         spinnerEdificios.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = spinnerEdificios.getSelectedItem().toString();
-                String hora =editTextHoraFiltro.getText().toString();
-                Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
-                async_get_clases.execute();
+                String item ;
+                String hora=null;
+                try {
+
+                    item = spinnerEdificios.getSelectedItem().toString();
+                    hora=spinnerHoras.getSelectedItem().toString();
+                    Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
+                    async_get_clases.execute();
+
+                }catch (Exception ex){}
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        spinnerHoras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String item ;
+                String hora=null;
+                try {
+
+                    item = spinnerEdificios.getSelectedItem().toString();
+                    hora=spinnerHoras.getSelectedItem().toString();
+                    Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
+                    async_get_clases.execute();
+
+                }catch (Exception ex){}
             }
 
             @Override
@@ -334,14 +319,14 @@ public class AgregarConteoFragment extends Fragment {
                             if (btnSave.getText().equals("MODIFICAR")||btnSave.getText().equals("Modificar"))
                             {
                                 if(nivel_!=4){
-                                    Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA,asitencia,usuario_,spinnerEdificios.getSelectedItem().toString(),editTextHoraFiltro.getText().toString());
+                                    Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA,asitencia,usuario_,spinnerEdificios.getSelectedItem().toString(),spinnerHoras.getSelectedItem().toString());
                                     async_conteo_update.execute();
                                 }else {
-                                    Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA,asitencia,usuario_,"",editTextHoraFiltro.getText().toString());
+                                    Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA,asitencia,usuario_,"",spinnerHoras.getSelectedItem().toString());
                                     async_conteo_update.execute();
                                 }
                             }else {
-                            Async_Conteo_set async_conteo_set = new  Async_Conteo_set(id_clase,asitencia,usuario_,spinnerEdificios.getSelectedItem().toString(),editTextHoraFiltro.getText().toString());
+                            Async_Conteo_set async_conteo_set = new  Async_Conteo_set(id_clase,asitencia,usuario_,spinnerEdificios.getSelectedItem().toString(),spinnerHoras.getSelectedItem().toString());
                             async_conteo_set.execute();
                             alertDialog.dismiss();
                             }
@@ -441,6 +426,7 @@ public class AgregarConteoFragment extends Fragment {
         protected Boolean doInBackground(Void... voids) {
             if (nivel_!=4){
             edificios.Get_Edificios_Dias_fromServer(usuario_, nivel_);
+            clases.Get_Horas_Clases_fromServer(nivel_,usuario_);
             clases.Get_Faltas_fromServer();
             }
                         return null;
@@ -455,8 +441,11 @@ public class AgregarConteoFragment extends Fragment {
                     final ArrayAdapter spinnerAdapterEdificio = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, edificios.getNOMBRE());
                     spinnerEdificios.setAdapter(spinnerAdapterEdificio);
 
+                    final ArrayAdapter spinnerAdapterHoras = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,clases.getHORAS_CLASES());
+                    spinnerHoras.setAdapter(spinnerAdapterHoras);
+
                     String edificio =spinnerEdificios.getSelectedItem().toString();
-                    Async_get_Clases async_get_clases = new Async_get_Clases(edificio,"6:30");
+                    Async_get_Clases async_get_clases = new Async_get_Clases(edificio,"06:30-8:00");
                     async_get_clases.execute();
                 }
             }catch (Exception ex){}
@@ -650,6 +639,8 @@ public class AgregarConteoFragment extends Fragment {
             }else {
                 Toast.makeText(getContext(),"No se insertó la Inasistencia",Toast.LENGTH_SHORT).show();
             }
+            Async_get_Clases async_get_clases = new Async_get_Clases(spinnerEdificios.getSelectedItem().toString(),spinnerHoras.getSelectedItem().toString());
+            async_get_clases.execute();
         }
     }
     public class Async_Conteo_set extends AsyncTask<Void,Void,Boolean> {

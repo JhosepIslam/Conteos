@@ -52,7 +52,7 @@
                 android:text="Hora:"
                 android:textAlignment="center"
                 android:textSize="20dp" />
-            <EditText
+            <Spinner
                 android:textColor="#FFF"
                 android:id="@+id/txtHoraContFiltro"
                 android:layout_width="wrap_content"

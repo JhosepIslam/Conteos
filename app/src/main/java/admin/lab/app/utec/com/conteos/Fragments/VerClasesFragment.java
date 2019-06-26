@@ -139,8 +139,11 @@ public class VerClasesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            final ArrayAdapter spinnerAdapterFacultades = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, facultades.getFacultad());
-            spFacultad.setAdapter(spinnerAdapterFacultades);
+            try {
+                final ArrayAdapter spinnerAdapterFacultades = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, facultades.getFacultad());
+                spFacultad.setAdapter(spinnerAdapterFacultades);
+            }catch (Exception ex){}
+
         }
     }
     public class AsyncGetClases extends AsyncTask<Void,Void,Boolean>{

@@ -19,8 +19,19 @@ public class Clases {
     Conexion conexion = new Conexion();
     private int cantida,  id_conteo;
     String nivel;
+    private  ArrayList HORAS_CLASES;
+
     private  ArrayList ID_CLASES, MATERIAS, CODIGO, DOCENTE, AULAS, EDIFICIO,
                         DIAS, SECCION, INCRITOS, HORA ,ID_MATERIA_CONTRO ,CANTIDAD_CONTEO;
+
+
+    public ArrayList getHORAS_CLASES() {
+        return HORAS_CLASES;
+    }
+
+    public void setHORAS_CLASES(ArrayList HORAS_CLASES) {
+        this.HORAS_CLASES = HORAS_CLASES;
+    }
 
     public ArrayList getID_MATERIA_CONTRO() {
         return ID_MATERIA_CONTRO;
@@ -524,6 +535,7 @@ public class Clases {
         String resultado;
         SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
         request.addProperty("id",id);
+
         envelope.dotNet=true;
         envelope.bodyOut=request;
         envelope.setOutputSoapObject(request);
@@ -547,6 +559,54 @@ public class Clases {
                 setNivel(v.getString("TIPO"));
                 setId_conteo(v.getInt("ID_ASISTENCIA"));
             }
+
+        }catch (Exception ex){
+            Log.d("Error",ex.getMessage());
+        }
+    }
+
+    public void  Get_Horas_Clases_fromServer(int nivel, String usuario){
+
+        Facultades facultades = new Facultades();
+        int facultad_id = facultades.get_facultad(usuario);
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+        if(nivel ==2){
+            METHOD_NAME="Get_Horas_Clases_Admin_JSON";
+            SOAP_ACTION="http://apoyo.conteoutec.org/Get_Horas_Clases_Admin_JSON";
+        }else {
+            METHOD_NAME="Get_Horas_Clases_JSON";
+            SOAP_ACTION="http://apoyo.conteoutec.org/Get_Horas_Clases_JSON";
+        }
+
+        String resultado;
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        if (nivel != 2){
+            request.addProperty("facultad",facultad_id);
+        }        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try{
+            transport.call(SOAP_ACTION,envelope);
+            SoapPrimitive respSoap=(SoapPrimitive) envelope.getResponse();
+
+            resultado=respSoap.toString();
+            JSONObject jsonObj = new JSONObject(resultado);
+            JSONArray obtener = jsonObj.getJSONArray("Table");
+
+            ArrayList Horas = new ArrayList();
+            int a=obtener.length();
+
+            for (int i = 0; i < a; i++)
+            {
+                JSONObject v = obtener.getJSONObject(i);
+                Horas.add(v.getString("HORA"));
+            }
+            setHORAS_CLASES(Horas);
+
 
         }catch (Exception ex){
             Log.d("Error",ex.getMessage());
