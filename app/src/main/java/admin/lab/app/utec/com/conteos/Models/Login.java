@@ -75,7 +75,6 @@ public class Login  {
         }
         catch (Exception ex) {
             resul = -1;
-            Log.d("error",ex.getMessage());
         }
 
 

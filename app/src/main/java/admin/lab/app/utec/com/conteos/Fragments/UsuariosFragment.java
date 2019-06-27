@@ -123,7 +123,7 @@ public class UsuariosFragment extends Fragment {
             fragment.setArguments(args);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment,tag).commit();
         }
-        private AlertDialog Alert(final int id_Usuario , String Nombre, String Usuario , String Facultad , String Nivel, String Lab){
+        private AlertDialog Alert(final int id_Usuario , String Nombre, String Usuario , String Facultad , String Nivel, String Lab, final String Estado){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View v = inflater.inflate(R.layout.info_usuario_dialog, null);
@@ -133,7 +133,6 @@ public class UsuariosFragment extends Fragment {
             final LinearLayout linearLayoutPassEdit = v.findViewById(R.id.LLEditPassWord);
             final LinearLayout linearLayoutPass1Edit = v.findViewById(R.id.LLEditPassWord1);
 
-            final LinearLayout linearLayoutNivelEdit = v.findViewById(R.id.LLEditNivel);
             final LinearLayout linearLayoutFacultad = v.findViewById(R.id.LLEditFacultad);
             final LinearLayout linearLayoutLabEdit = v.findViewById(R.id.LLEditLab);
 
@@ -155,6 +154,12 @@ public class UsuariosFragment extends Fragment {
             final CheckBox checkBoxPassEdit = v.findViewById(R.id.checkboxEditPass_dialog);
             final CheckBox checkBoxFacultadEdit = v.findViewById(R.id.checkboxEditFacult_dialog);
             final CheckBox checkBoxResetPass = v.findViewById(R.id.checkboxResetPassWord);
+            final CheckBox checkBoxEstadoEdit = v.findViewById(R.id.checkboxEditEstado_dialog);
+            if (Estado =="Activo"){
+                checkBoxEstadoEdit.setText("Desactivar");
+            }else {
+                checkBoxEstadoEdit.setText("Activar");
+            }
 
 
 
@@ -217,6 +222,7 @@ public class UsuariosFragment extends Fragment {
             textViewNivel.setText(Nivel);
             textViewNombre.setText(Nombre);
             textViewUsuario.setText(Usuario);
+
             switch (Nivel){
 
 
@@ -241,6 +247,19 @@ public class UsuariosFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     AsyncModificar asyncModificar;
+                    if (checkBoxEstadoEdit.isChecked()){
+                        //
+                        int EstadO_N =1;
+                        String es = checkBoxEstadoEdit.getText().toString();
+                        if (es =="Desactivar"){
+                            EstadO_N = 0;
+                        }else {
+                            EstadO_N = 1;
+                        }
+                        AsyncModificarEstado asyncModificarEstado = new AsyncModificarEstado(EstadO_N,id_Usuario);
+                        asyncModificarEstado.execute();
+
+                    }
                     if (checkBoxPassEdit.isChecked() && checkBoxLabEdit.isChecked() && checkBoxFacultadEdit.isChecked()){
                         if (checkBoxResetPass.isChecked()){
                             caso=1;
@@ -369,6 +388,29 @@ public class UsuariosFragment extends Fragment {
                 return true;
             }
         }
+        public class AsyncModificarEstado extends AsyncTask<Void,Void,Boolean> {
+
+            int Estado,id ;
+            boolean mod;
+            public AsyncModificarEstado(int Estado,int id){
+                this.Estado= Estado;
+                this.id = id;
+            }
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+
+                mod =modificaciones.modificar_estado(id,Estado,usuario_);
+                return null;
+
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                AsyncGet asyncGet = new AsyncGet();
+                asyncGet.execute();
+            }
+        }
         public class AsyncModificar extends AsyncTask<Void,Void,Boolean> {
 
             String nueva_clave, nueva_facultad,nuevo_lab,Usuario;
@@ -473,7 +515,7 @@ public class UsuariosFragment extends Fragment {
                     recyclerView = getView().findViewById(R.id.recyclerViewUsuarios);
                     layoutManager = new LinearLayoutManager(getContext());
                     myAdapter =  new UsuariosAdapter(usuarios.getNOMBRE(), usuarios.getNOMBRE_USUARIO(), usuarios.getFACULTAD()
-                            , usuarios.getNIVEL(), usuarios.getID_USUARIO(), R.layout.card_view_usuario, new UsuariosAdapter.OnItemClickListener() {
+                            , usuarios.getNIVEL(), usuarios.getID_USUARIO(),usuarios.getESTADO(), R.layout.card_view_usuario, new UsuariosAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(int id_usuario,String nivel, int position) {
                             Async_A_Get async_a_get = new Async_A_Get(nivel,id_usuario);
@@ -511,7 +553,7 @@ public class UsuariosFragment extends Fragment {
                     recyclerView = getView().findViewById(R.id.recyclerViewUsuarios);
                     layoutManager = new LinearLayoutManager(getContext());
                     myAdapter =  new UsuariosAdapter(usuarios.getNOMBRE(), usuarios.getNOMBRE_USUARIO(), usuarios.getFACULTAD()
-                            , usuarios.getNIVEL(), usuarios.getID_USUARIO(), R.layout.card_view_usuario, new UsuariosAdapter.OnItemClickListener() {
+                            , usuarios.getNIVEL(), usuarios.getID_USUARIO(),usuarios.getESTADO(), R.layout.card_view_usuario, new UsuariosAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(int id_usuario,String nivel, int position) {
                             Async_A_Get async_a_get = new Async_A_Get(nivel,id_usuario);
@@ -573,7 +615,7 @@ public class UsuariosFragment extends Fragment {
                                     async_a_get.execute();
                                 }else {
                                     Alert(id,usuarios.getA_nombre(),usuarios.getA_Nombre_Usuario()
-                                            ,usuarios.getA_Facultad(),usuarios.getA_Nivel(),usuarios.getA_Lab()).show();
+                                            ,usuarios.getA_Facultad(),usuarios.getA_Nivel(),usuarios.getA_Lab(),usuarios.getA_Estado()).show();
                                 }
 
                             }catch (Exception ex){
@@ -583,7 +625,7 @@ public class UsuariosFragment extends Fragment {
                         break;
                     default:
                         Alert(id,usuarios.getA_nombre(),usuarios.getA_Nombre_Usuario()
-                                ,usuarios.getA_Facultad(),usuarios.getA_Nivel(),null).show();
+                                ,usuarios.getA_Facultad(),usuarios.getA_Nivel(),null,usuarios.getA_Estado()).show();
 
                         String us = usuarios.getA_Nombre_Usuario();
 

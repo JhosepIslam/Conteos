@@ -11,19 +11,20 @@ import java.util.ArrayList;
 
 public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHolder>{
 
-    private ArrayList Nombre,Nombre_Usuario,Facultad,Nivel,Id_Usuario;
+    private ArrayList Nombre,Nombre_Usuario,Facultad,Nivel,Id_Usuario,Estado;
     private UsuariosAdapter.OnItemClickListener itemClickListener;
     private int layout;
 
 
     public UsuariosAdapter(ArrayList Nombre ,ArrayList Nombre_Usuario, ArrayList Facultad,
-                           ArrayList Nivel ,ArrayList Id_Usuario,int layout,OnItemClickListener itemClickListener){
+                           ArrayList Nivel ,ArrayList Id_Usuario,ArrayList Estado,int layout,OnItemClickListener itemClickListener){
         this.Facultad=Facultad;
         this.Id_Usuario=Id_Usuario;
         this.Nivel = Nivel;
         this.Nombre =Nombre;
         this.Nombre_Usuario = Nombre_Usuario;
         this.layout = layout;
+        this.Estado = Estado;
         this.itemClickListener = itemClickListener;
     }
 
@@ -38,7 +39,7 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.bind(Integer.parseInt(Id_Usuario.get(i).toString()),Nombre_Usuario.get(i).toString(),
-                Nombre.get(i).toString(),Nivel.get(i).toString(),Facultad.get(i).toString(),itemClickListener);
+                Nombre.get(i).toString(),Nivel.get(i).toString(),Facultad.get(i).toString(),Estado.get(i).toString(),itemClickListener);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHo
         public TextView txtNombre;
         public TextView txtUsuario;
         public TextView txtNivel;
-        public TextView txtFacultad;
+        public TextView txtFacultad,txtEstado;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -63,14 +64,16 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHo
             txtUsuario = itemView.findViewById(R.id.textViewNombre_Usuario_ListUsuario);
             txtNivel = itemView.findViewById(R.id.textViewNivel_ListUsuario);
             txtFacultad = itemView.findViewById(R.id.textViewFacultad_ListUsuario);
+            txtEstado = itemView.findViewById(R.id.textViewEstado_ListUsuario);
         }
         public  void bind(final int id_usuario ,final String nombreUsuario ,final String nombre ,
-                          final String nivel,final String facultad,final UsuariosAdapter.OnItemClickListener listener){
+                          final String nivel,final String facultad,final  String estado,final UsuariosAdapter.OnItemClickListener listener){
 
             this.txtNombre.setText(nombre);
             this.txtUsuario.setText(nombreUsuario);
             this.txtNivel.setText(nivel);
             this.txtFacultad.setText(facultad);
+            this.txtEstado.setText(estado);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -419,7 +419,7 @@ public class Clases {
             setCANTIDAD_CONTEO(cantidades);
 
         }catch (Exception ex){
-            Log.d("Error",ex.getMessage());
+            System.out.println("a");
         }
 
     }
@@ -576,16 +576,26 @@ public class Clases {
         if(nivel ==2){
             METHOD_NAME="Get_Horas_Clases_Admin_JSON";
             SOAP_ACTION="http://apoyo.conteoutec.org/Get_Horas_Clases_Admin_JSON";
-        }else {
+        }else if (nivel == 4){
+
+            METHOD_NAME="Get_Horas_Clases_Docente_JSON";
+            SOAP_ACTION="http://apoyo.conteoutec.org/Get_Horas_Clases_Docente_JSON";
+        }
+        else{
             METHOD_NAME="Get_Horas_Clases_JSON";
             SOAP_ACTION="http://apoyo.conteoutec.org/Get_Horas_Clases_JSON";
         }
 
         String resultado;
         SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
-        if (nivel != 2){
+        if (nivel == 4){
+            request.addProperty("usuario",usuario);
+        }
+        else if (nivel != 2){
+
             request.addProperty("facultad",facultad_id);
-        }        envelope.dotNet=true;
+        }
+        envelope.dotNet=true;
         envelope.bodyOut=request;
         envelope.setOutputSoapObject(request);
 

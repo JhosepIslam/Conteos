@@ -261,6 +261,7 @@ public class ParcialesFragment extends Fragment {
                    linearLayoutFin.setVisibility(View.VISIBLE);
                }else
                {
+                   checkBoxCiclo.setChecked(false);
                    linearLayoutFin.setVisibility(View.GONE);
                }
             }
@@ -272,6 +273,7 @@ public class ParcialesFragment extends Fragment {
                 if (b){
                     linearLayoutInicio.setVisibility(View.VISIBLE);
                 }else {
+                    checkBoxCiclo.setChecked(false);
                     linearLayoutInicio.setVisibility(View.GONE);
                 }
             }

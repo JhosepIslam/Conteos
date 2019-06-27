@@ -93,12 +93,18 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:layout_gravity="center"
                 android:id="@+id/checkboxEditLaboratorio_dialog"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Laboratorio"
+                android:textColor="#FFF" />
+            <CheckBox
+                android:id="@+id/checkboxEditEstado_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=" Laboratorio"
+                android:text=" Activar"
                 android:textColor="#FFF" />
         </LinearLayout>
     </LinearLayout>

@@ -14,10 +14,21 @@ import java.util.ArrayList;
 public class Usuarios {
     private  String METHOD_NAME ;
     private   String SOAP_ACTION;
-    private ArrayList NOMBRE,NOMBRE_USUARIO,ID_USUARIO,NIVEL,FACULTAD;
-    private String A_nombre, A_Nombre_Usuario,A_Nivel, A_Facultad ,A_Clave, A_Lab;
+    private ArrayList NOMBRE,NOMBRE_USUARIO,ID_USUARIO,NIVEL,FACULTAD, ESTADO;
+    private String A_nombre, A_Nombre_Usuario,A_Nivel, A_Facultad ,A_Clave, A_Lab , A_Estado;
     Conexion conexion = new Conexion();
 
+    public ArrayList getESTADO() {
+        return ESTADO;
+    }
+
+    public String getA_Estado() {
+        return A_Estado;
+    }
+
+    public void setESTADO(ArrayList ESTADO) {
+        this.ESTADO = ESTADO;
+    }
 
     public String getA_nombre() {
         return A_nombre;
@@ -100,6 +111,8 @@ public class Usuarios {
             ArrayList niveles = new ArrayList<String>() ;
             ArrayList ids = new ArrayList<String>() ;
             ArrayList facultades = new ArrayList();
+            ArrayList estados = new ArrayList();
+
 
 
             for (int i = 0; i < a; i++)
@@ -110,12 +123,17 @@ public class Usuarios {
                 String nivel =v.getString("TIPO");
                 String id =v.getString("ID_USUARIO");
                 String facultad = v.getString("FACULTAD");
+                String estado = v.getString("ESTADO");
+                if (estado =="1"){
+                    estado = "Activo";
+                }else estado="Inactivo";
                 if (!nombre.isEmpty() && nombre !=null){
                     nombres.add(nombre);
                     usuarios.add(usuario);
                     niveles.add(nivel);
                     ids.add(id);
                     facultades.add(facultad);
+                    estados.add(estado);
                 }
             }
             setFACULTAD(facultades);
@@ -123,6 +141,7 @@ public class Usuarios {
             setNIVEL(niveles);
             setNOMBRE(nombres);
             setNOMBRE_USUARIO(usuarios);
+            setESTADO(estados);
         }catch (Exception ex){
             Log.d("Error",ex.getMessage());
         }
@@ -146,6 +165,7 @@ public class Usuarios {
         A_Clave="";
         A_Facultad="";
         A_Nivel="";
+        A_Estado="";
 
         try {
             transport.call(SOAP_ACTION, envelope);
@@ -163,6 +183,10 @@ public class Usuarios {
                 A_Clave = v.getString("CLAVE");
                 A_Facultad = v.getString("FACULTAD");
                 A_Nivel = v.getString("TIPO");
+                A_Estado = v.getString("ESTADO");
+                if (A_Estado =="1"){
+                    A_Estado = "Activo";
+                }else A_Estado="Inactivo";
             }
         }
         catch (Exception ex){
@@ -199,6 +223,8 @@ public class Usuarios {
             ArrayList niveles = new ArrayList<String>() ;
             ArrayList ids = new ArrayList<String>() ;
             ArrayList facultades = new ArrayList();
+            ArrayList estados = new ArrayList();
+
             for (int i = 0; i < length; i++)
             {
                 JSONObject v = obtener.getJSONObject(i);
@@ -207,12 +233,17 @@ public class Usuarios {
                 String nivel =v.getString("TIPO");
                 String id =v.getString("ID_USUARIO");
                 String facultad = v.getString("FACULTAD");
+                String estado = v.getString("ESTADO");
+                if (estado =="1"){
+                    estado = "Activo";
+                }else estado="Inactivo";
                 if (!nombre.isEmpty() && nombre !=null){
                     nombres.add(nombre);
                     usuarios.add(usuario_);
                     niveles.add(nivel);
                     ids.add(id);
                     facultades.add(facultad);
+                    estados.add(estado);
                 }
             }
             setFACULTAD(facultades);
@@ -220,6 +251,7 @@ public class Usuarios {
             setNIVEL(niveles);
             setNOMBRE(nombres);
             setNOMBRE_USUARIO(usuarios);
+            setESTADO(estados);
         }
         catch (Exception ex){
 
@@ -246,6 +278,7 @@ public class Usuarios {
         A_Facultad="";
         A_Nivel="";
         A_Lab="";
+        A_Estado="";
 
         try {
             transport.call(SOAP_ACTION, envelope);
@@ -264,6 +297,10 @@ public class Usuarios {
                 A_Facultad = v.getString("FACULTAD");
                 A_Nivel = v.getString("TIPO");
                 A_Lab= v.getString("LABORATORIO");
+                A_Estado = v.getString("ESTADO");
+                if (A_Estado =="1"){
+                    A_Estado = "Activo";
+                }else A_Estado="Inactivo";
             }
         }
         catch (Exception ex){

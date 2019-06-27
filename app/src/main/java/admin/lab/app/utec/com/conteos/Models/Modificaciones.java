@@ -61,7 +61,35 @@ public class Modificaciones {
             transport.call(SOAP_ACTION, envelope);
             SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
 
-            return Boolean.parseBoolean(request.toString());
+            return Boolean.parseBoolean(respSoap.toString());
+        }
+        catch (Exception ex){
+            return false;
+        }
+    }
+
+    public boolean modificar_estado(int usuario_update, int Estado, String Usuario){
+        METHOD_NAME="Actualizar_Estado_Usuario";
+        SOAP_ACTION="http://apoyo.conteoutec.org/Actualizar_Estado_Usuario";
+
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("ID_UsuarioUpdate",usuario_update);
+        request.addProperty("Estado",Estado);
+        request.addProperty("Usuario",Usuario);
+
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try {
+            transport.call(SOAP_ACTION, envelope);
+            SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
+
+            return Boolean.parseBoolean(respSoap.toString());
         }
         catch (Exception ex){
             return false;
@@ -90,7 +118,7 @@ public class Modificaciones {
             transport.call(SOAP_ACTION, envelope);
             SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
 
-            return Boolean.parseBoolean(request.toString());
+            return Boolean.parseBoolean(respSoap.toString());
         }
         catch (Exception ex){
             return false;
@@ -119,7 +147,7 @@ public class Modificaciones {
             SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
 
 
-            return Boolean.parseBoolean(request.toString());
+            return Boolean.parseBoolean(respSoap.toString());
 
         }
         catch (Exception ex){

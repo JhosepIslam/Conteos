@@ -1,6 +1,5 @@
 package admin.lab.app.utec.com.conteos.Fragments;
 
-
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -54,6 +53,7 @@ public class AgregarConteoFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     AlertDialog alertDialog;
     EditText txtAsistencia;
+    Boolean flag= false;
     ShimmerFrameLayout shimmerFrameLayout;
     int ID_ASISTENCIA;
     private LinearLayout LLfiltroEdificio;
@@ -102,12 +102,10 @@ public class AgregarConteoFragment extends Fragment {
 
         if (nivel_==4){
             LLfiltroEdificio.setVisibility(View.GONE);
-        }else {
+        }
             Async_get_edif async_get_edif = new Async_get_edif();
             async_get_edif.execute();
-        }
-        Async_get_Clases async_get_clases = new Async_get_Clases(usuario_,"6:30");
-        async_get_clases.execute();
+
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -133,7 +131,7 @@ public class AgregarConteoFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item ;
-                String hora=null;
+                String hora;
                 try {
 
                     item = spinnerEdificios.getSelectedItem().toString();
@@ -155,13 +153,17 @@ public class AgregarConteoFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item ;
-                String hora=null;
+                String hora;
                 try {
-
+                    if (nivel_==4){
+                    Async_get_Clases async_get_clases = new Async_get_Clases(usuario_,spinnerHoras.getSelectedItem().toString().trim());
+                    async_get_clases.execute();
+                }else {
                     item = spinnerEdificios.getSelectedItem().toString();
                     hora=spinnerHoras.getSelectedItem().toString();
                     Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
                     async_get_clases.execute();
+                    }
 
                 }catch (Exception ex){}
             }
@@ -307,77 +309,86 @@ public class AgregarConteoFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!checkBox.isChecked()){
-                    if (!txtAsistencia.getText().toString().trim().isEmpty()){
-                        int asitencia =Integer.parseInt(txtAsistencia.getText().toString());
-                        if (asitencia<=0){
-                            txtAsistencia.setError("Si no se contabilizo nada selecciones la opcion Sin Asistencia");
-                        }
-                        else if (asitencia>inscritos){
-                            txtAsistencia.setError("La asistencia debe ser menor o igual a la cantidad de inscrito");
-                        }else {
-                            if (btnSave.getText().equals("MODIFICAR")||btnSave.getText().equals("Modificar"))
-                            {
-                                if(nivel_!=4){
-                                    Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA,asitencia,usuario_,spinnerEdificios.getSelectedItem().toString(),spinnerHoras.getSelectedItem().toString());
-                                    async_conteo_update.execute();
-                                }else {
-                                    Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA,asitencia,usuario_,"",spinnerHoras.getSelectedItem().toString());
-                                    async_conteo_update.execute();
+                if (flag) {
+                    if (!checkBox.isChecked()) {
+                        if (!txtAsistencia.getText().toString().trim().isEmpty()) {
+                            int asitencia = Integer.parseInt(txtAsistencia.getText().toString());
+                            if (asitencia <= 0) {
+                                txtAsistencia.setError("Si no se contabilizo nada selecciones la opcion Sin Asistencia");
+                            } else if (asitencia > inscritos) {
+                                txtAsistencia.setError("La asistencia debe ser menor o igual a la cantidad de inscrito");
+                            } else {
+                                if (btnSave.getText().equals("MODIFICAR") || btnSave.getText().equals("Modificar")) {
+                                    if (nivel_ != 4) {
+                                        Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA, asitencia, usuario_, spinnerEdificios.getSelectedItem().toString(), spinnerHoras.getSelectedItem().toString());
+                                        async_conteo_update.execute();
+                                    } else {
+                                        Async_Conteo_Update async_conteo_update = new Async_Conteo_Update(ID_ASISTENCIA, asitencia, usuario_, "", spinnerHoras.getSelectedItem().toString());
+                                        async_conteo_update.execute();
+                                    }
+                                } else {
+
+
+                                    if (nivel_ != 4) {
+                                        Async_Conteo_set async_conteo_set = new Async_Conteo_set(id_clase, asitencia, usuario_, spinnerEdificios.getSelectedItem().toString(), spinnerHoras.getSelectedItem().toString());
+                                        async_conteo_set.execute();
+                                        alertDialog.dismiss();
+                                    } else {
+                                        Async_Conteo_set async_conteo_set = new Async_Conteo_set(id_clase, asitencia, usuario_,"", spinnerHoras.getSelectedItem().toString());
+                                        async_conteo_set.execute();
+                                        alertDialog.dismiss();
+                                    }
+
                                 }
-                            }else {
-                            Async_Conteo_set async_conteo_set = new  Async_Conteo_set(id_clase,asitencia,usuario_,spinnerEdificios.getSelectedItem().toString(),spinnerHoras.getSelectedItem().toString());
-                            async_conteo_set.execute();
-                            alertDialog.dismiss();
                             }
-                        }
-                    }
-                    else txtAsistencia.setError("Ingrese Asitencia o seleccione Sin Asistencia");
-                }else {
-                    Async_Falta_set async_falta_set;
-                    if (!(radioButton1.isChecked() || radioButton2.isChecked()||radioButton3.isChecked() || radioButton4.isChecked()||
-                            radioButton5.isChecked() || radioButton6.isChecked()||radioButton7.isChecked() || radioButton8.isChecked())){
-                        Toast.makeText(getContext(),"Seleccione una Opcion",Toast.LENGTH_SHORT).show();
-                    }else {
-                        String detall=null;
-                        if (radioButton1.isChecked()){
-                            detall= radioButton1.getText().toString().trim();
-                        }else if (radioButton2.isChecked()){
-                            detall= radioButton2.getText().toString().trim();
-                        }else if (radioButton3.isChecked()){
-                            detall= radioButton3.getText().toString().trim();
-                        }else if (radioButton4.isChecked()){
-                            detall= radioButton4.getText().toString().trim();
-                        }else if (radioButton6.isChecked()){
-                            detall= radioButton6.getText().toString().trim();
-                        }else if (radioButton7.isChecked()){
-                            detall= radioButton7.getText().toString().trim();
-                        }
-                        if (radioButton5.isChecked()){
-                            if (editTextHora.getText().toString().trim().isEmpty()){
-                                editTextHora.setError("Seleccione La Hora");
-                            }else {
-                                async_falta_set = new Async_Falta_set(id_clase,usuario_,"Falta",radioButton5.getText().toString().trim(),editTextHora.getText().toString().trim());
-                                async_falta_set.execute();
+                        } else
+                            txtAsistencia.setError("Ingrese Asitencia o seleccione Sin Asistencia");
+                    } else {
+                        Async_Falta_set async_falta_set;
+                        if (!(radioButton1.isChecked() || radioButton2.isChecked() || radioButton3.isChecked() || radioButton4.isChecked() ||
+                                radioButton5.isChecked() || radioButton6.isChecked() || radioButton7.isChecked() || radioButton8.isChecked())) {
+                            Toast.makeText(getContext(), "Seleccione una Opcion", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String detall = null;
+                            if (radioButton1.isChecked()) {
+                                detall = radioButton1.getText().toString().trim();
+                            } else if (radioButton2.isChecked()) {
+                                detall = radioButton2.getText().toString().trim();
+                            } else if (radioButton3.isChecked()) {
+                                detall = radioButton3.getText().toString().trim();
+                            } else if (radioButton4.isChecked()) {
+                                detall = radioButton4.getText().toString().trim();
+                            } else if (radioButton6.isChecked()) {
+                                detall = radioButton6.getText().toString().trim();
+                            } else if (radioButton7.isChecked()) {
+                                detall = radioButton7.getText().toString().trim();
                             }
-                        }else if (radioButton8.isChecked()){
-                            if (txtComentario.getText().toString().trim().isEmpty()){
-                                txtComentario.setError("Requerido");
-                            }else {
-                                async_falta_set = new Async_Falta_set(id_clase,usuario_,txtComentario.getText().toString().trim(),radioButton8.getText().toString().trim(),"");
+                            if (radioButton5.isChecked()) {
+                                if (editTextHora.getText().toString().trim().isEmpty()) {
+                                    editTextHora.setError("Seleccione La Hora");
+                                } else {
+                                    async_falta_set = new Async_Falta_set(id_clase, usuario_, "Falta", radioButton5.getText().toString().trim(), editTextHora.getText().toString().trim());
+                                    async_falta_set.execute();
+                                }
+                            } else if (radioButton8.isChecked()) {
+                                if (txtComentario.getText().toString().trim().isEmpty()) {
+                                    txtComentario.setError("Requerido");
+                                } else {
+                                    async_falta_set = new Async_Falta_set(id_clase, usuario_, txtComentario.getText().toString().trim(), radioButton8.getText().toString().trim(), "");
+                                    async_falta_set.execute();
+                                    alertDialog.dismiss();
+                                }
+                            } else {
+                                async_falta_set = new Async_Falta_set(id_clase, usuario_, "Falta", detall, "");
                                 async_falta_set.execute();
                                 alertDialog.dismiss();
                             }
-                        }else {
-                            async_falta_set = new Async_Falta_set(id_clase,usuario_,"Falta",detall,"");
-                            async_falta_set.execute();
-                            alertDialog.dismiss();
                         }
+
                     }
 
+
                 }
-
-
             }
         });
 
@@ -426,10 +437,10 @@ public class AgregarConteoFragment extends Fragment {
         protected Boolean doInBackground(Void... voids) {
             if (nivel_!=4){
             edificios.Get_Edificios_Dias_fromServer(usuario_, nivel_);
+            }
             clases.Get_Horas_Clases_fromServer(nivel_,usuario_);
             clases.Get_Faltas_fromServer();
-            }
-                        return null;
+            return null;
         }
 
         @Override
@@ -440,14 +451,9 @@ public class AgregarConteoFragment extends Fragment {
                 if (nivel_!=4){
                     final ArrayAdapter spinnerAdapterEdificio = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, edificios.getNOMBRE());
                     spinnerEdificios.setAdapter(spinnerAdapterEdificio);
-
-                    final ArrayAdapter spinnerAdapterHoras = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,clases.getHORAS_CLASES());
-                    spinnerHoras.setAdapter(spinnerAdapterHoras);
-
-                    String edificio =spinnerEdificios.getSelectedItem().toString();
-                    Async_get_Clases async_get_clases = new Async_get_Clases(edificio,"06:30-8:00");
-                    async_get_clases.execute();
                 }
+                final ArrayAdapter spinnerAdapterHoras = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,clases.getHORAS_CLASES());
+                spinnerHoras.setAdapter(spinnerAdapterHoras);
             }catch (Exception ex){}
         }
     }
@@ -471,8 +477,8 @@ public class AgregarConteoFragment extends Fragment {
             }else {
                 clases.Get_Clases_FromServer(edifio, hora,usuario_,nivel_);
             }
-            clases.Get_All_Conteo(hora);
-            clases.Get_Faltas_fromServer();
+                clases.Get_All_Conteo(hora);
+                clases.Get_Faltas_fromServer();
             try {
                 Thread.sleep(2000);
             }catch (Exception ex){
@@ -535,7 +541,7 @@ public class AgregarConteoFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 // Add the buttons
         builder.setMessage("No puede modificar la Asistencia, el Docente insertó los Datos")
-                .setTitle("Advertencia");
+                .setTitle("Advertencia").setCancelable(false);
 
 
         builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -550,12 +556,14 @@ public class AgregarConteoFragment extends Fragment {
     }
     public class Async_Conteo_get extends AsyncTask<Void,Void,Boolean> {
         int id ;
+
         public Async_Conteo_get(int id){
             this.id=id;
         }
         @Override
         protected Boolean doInBackground(Void... voids) {
             clases.Get_conteo_fromServer(id);
+            flag =false;
 
             return null;
         }
@@ -580,6 +588,7 @@ public class AgregarConteoFragment extends Fragment {
             }catch (Exception ex){
                 Log.d("e",ex.getMessage());
             }
+            flag = true;
         }
     }
     public class Async_Conteo_Update extends AsyncTask<Void,Void,Boolean> {

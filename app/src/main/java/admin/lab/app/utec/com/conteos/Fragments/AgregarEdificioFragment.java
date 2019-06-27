@@ -156,6 +156,11 @@ public class AgregarEdificioFragment extends Fragment {
         final EditText editTextPisos = v.findViewById(R.id.txtNuevasPlantas_Edit);
         final EditText editTextAulas = v.findViewById(R.id.txtNuevasAulasEdificio_Edit);
 
+        editTextAulas.setText(Aulas+"");
+        editTextPisos.setText(Pisos+"");
+        editTextNombre.setText(nombre+"");
+
+
         checkBoxNombre.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

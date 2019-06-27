@@ -56,6 +56,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Facultad"/>
+        <TextView
+            android:textColor="#fff"
+            android:layout_margin="5dp"
+            android:textSize="15dp"
+            android:id="@+id/textViewEstado_ListUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado:"/>
     </LinearLayout>
 
 
