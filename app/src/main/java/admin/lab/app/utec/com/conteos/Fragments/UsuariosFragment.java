@@ -401,7 +401,6 @@ public class UsuariosFragment extends Fragment {
 
                 mod =modificaciones.modificar_estado(id,Estado,usuario_);
                 return null;
-
             }
 
             @Override
