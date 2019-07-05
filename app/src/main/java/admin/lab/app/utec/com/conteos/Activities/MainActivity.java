@@ -27,8 +27,10 @@ import admin.lab.app.utec.com.conteos.Fragments.ClasesFragment;
 import admin.lab.app.utec.com.conteos.Fragments.DiaHoraParcial_Fragment;
 import admin.lab.app.utec.com.conteos.Fragments.DiasHorasFragment;
 import admin.lab.app.utec.com.conteos.Fragments.HomeFragment;
+import admin.lab.app.utec.com.conteos.Fragments.LaboratoriosFragment;
 import admin.lab.app.utec.com.conteos.Fragments.ParcialesFragment;
 import admin.lab.app.utec.com.conteos.Fragments.PerfilFragment;
+import admin.lab.app.utec.com.conteos.Fragments.ReportesFragment;
 import admin.lab.app.utec.com.conteos.Fragments.UsuariosFragment;
 import admin.lab.app.utec.com.conteos.Fragments.VerClasesFragment;
 import admin.lab.app.utec.com.conteos.Fragments.Ver_Info_ConteosFragment;
@@ -177,6 +179,16 @@ public class MainActivity extends AppCompatActivity
                 tag="ClasesInfo";
                 transaction=true;
                 break;
+            case R.id.nav_Reportes:
+                fragment = new ReportesFragment();
+                tag="Reporte";
+                transaction=true;
+                break;
+            case R.id.nav_AgregarLabs:
+                fragment = new LaboratoriosFragment();
+                tag="Labs";
+                transaction=true;
+                break;
         }
         if (transaction){
             changeFragment(fragment,tag);
@@ -222,6 +234,7 @@ public class MainActivity extends AppCompatActivity
             case 2:
                 break;
             case 3:
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
@@ -230,6 +243,7 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
                 break;
             case 4:
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
@@ -239,6 +253,7 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
                 break;
             case 5:
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);

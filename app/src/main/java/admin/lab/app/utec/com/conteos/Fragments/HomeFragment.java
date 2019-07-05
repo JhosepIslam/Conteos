@@ -72,6 +72,9 @@ public class HomeFragment extends Fragment {
                 public void run() {
                     // avoid exception:
                     // "Only the original thread that created a view hierarchy can touch its views"
+                    if(getActivity() == null)
+                        return;
+
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
                             imageSwitcher.setImageResource(gallery[position]);

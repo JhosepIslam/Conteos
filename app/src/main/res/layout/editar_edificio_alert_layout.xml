@@ -55,19 +55,19 @@
             android:textAlignment="center"
             android:textSize="15dp"/>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <CheckBox
                 android:id="@+id/checkboxEditNombreEdificios_dialog"
-                android:layout_width="155dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Nombre"
                 android:textColor="#FFF" />
             <CheckBox
                 android:id="@+id/checkboxEditPlantasEdificios_dialog"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Plantas"
@@ -79,12 +79,21 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:layout_gravity="center"
                 android:id="@+id/checkboxEditAulasEdificios_dialog"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text=" Aulas"
+                android:textColor="#FFF" />
+
+            <CheckBox
+                android:id="@+id/checkboxEditAbreviaturaEdificios_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text=" Abreviatura"
                 android:textColor="#FFF" />
         </LinearLayout>
     </LinearLayout>
@@ -160,6 +169,26 @@
                         />
                 </android.support.design.widget.TextInputLayout>
 
+
+            </LinearLayout>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/LLEditAbreviaturaEdificio"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/txtNuevasAbreviatura_Edit"
+                        android:textColor="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nueva Abreviatura"
+                        />
+                </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
         </LinearLayout>

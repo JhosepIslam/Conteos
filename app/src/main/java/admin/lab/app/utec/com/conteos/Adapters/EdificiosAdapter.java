@@ -11,17 +11,18 @@ import java.util.ArrayList;
 import admin.lab.app.utec.com.conteos.R;
 
 public class EdificiosAdapter extends RecyclerView.Adapter<EdificiosAdapter.ViewHolder> {
-    private ArrayList Nombre,num_planta,num_aulas,id;
+    private ArrayList Nombre,num_planta,num_aulas,id,Abrev;
     private EdificiosAdapter.OnItemClickListener itemClickListener;
     private int layout;
 
 
-    public EdificiosAdapter(ArrayList Nombre,ArrayList num_planta,ArrayList num_aulas,ArrayList id,
+    public EdificiosAdapter(ArrayList Nombre,ArrayList num_planta,ArrayList num_aulas,ArrayList id,ArrayList Abrev,
         int layout, OnItemClickListener itemClickListener){
 
         this.Nombre =Nombre;
         this.num_aulas=num_aulas;
         this.num_planta = num_planta;
+        this.Abrev=Abrev;
         this.id = id;
         this.layout = layout;
         this.itemClickListener = itemClickListener;
@@ -39,7 +40,7 @@ public class EdificiosAdapter extends RecyclerView.Adapter<EdificiosAdapter.View
 
 
         viewHolder.bind(Nombre.get(i).toString(),num_planta.get(i).toString(),num_aulas.get(i).toString()
-                ,id.get(i).toString(),itemClickListener);
+                ,id.get(i).toString(),Abrev.get(i).toString(),itemClickListener);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class EdificiosAdapter extends RecyclerView.Adapter<EdificiosAdapter.View
             this.aulas = view.findViewById(R.id.txtAulasEdificio);
         }
         public  void bind(final String nombre , final String num_plantas , final String num_aulas ,
-                          final String id, final OnItemClickListener listener){
+                          final String id, final String Abrev, final OnItemClickListener listener){
 
             this.nombre.setText("Nombre :"+nombre);
             this.plantas.setText("Plantas: "+num_plantas);
@@ -73,13 +74,13 @@ public class EdificiosAdapter extends RecyclerView.Adapter<EdificiosAdapter.View
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClick(Integer.parseInt(id), nombre ,Integer.parseInt(num_plantas),Integer.parseInt(num_aulas), getAdapterPosition());
+                    listener.onItemClick(Integer.parseInt(id), nombre ,Integer.parseInt(num_plantas),Integer.parseInt(num_aulas),Abrev, getAdapterPosition());
                 }
             });
 
         }
     }
     public  interface  OnItemClickListener{
-        void onItemClick(int id ,String nombre , int Plantas, int Aulas ,int  position);
+        void onItemClick(int id ,String nombre , int Plantas, int Aulas ,String Abrev,int  position);
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Edificios {
 
-    private ArrayList NOMBRE;
+    private ArrayList NOMBRE,ABREVIATURA;
     private ArrayList NUM_AULAS;
     private ArrayList NUM_PLANTAS;
     private ArrayList ID;
@@ -28,11 +28,16 @@ public class Edificios {
     String SOAP_ACTION;
 
 
-    public int countItems(){
-        return NOMBRE.size();
-    }
     public ArrayList getNOMBRE() {
         return NOMBRE;
+    }
+
+    public ArrayList getABREVIATURA() {
+        return ABREVIATURA;
+    }
+
+    public void setABREVIATURA(ArrayList ABREVIATURA) {
+        this.ABREVIATURA = ABREVIATURA;
     }
 
     public void setNOMBRE(ArrayList NOMBRE) {
@@ -153,6 +158,7 @@ public class Edificios {
             ArrayList plantas = new ArrayList<String>() ;
             ArrayList aulas = new ArrayList<String>() ;
             ArrayList ids = new ArrayList<String>() ;
+            ArrayList Abrev = new ArrayList<String>() ;
 
 
             for (int i = 0; i < a; i++)
@@ -167,19 +173,21 @@ public class Edificios {
                     plantas.add(planta);
                     aulas.add(aula);
                     ids.add(id);
+                    Abrev.add(v.getString("ABREVIATURA"));
                 }
             }
             setID(ids);
             setNUM_AULAS(aulas);
             setNUM_PLANTAS(plantas);
             setNOMBRE(nombres);
+            setABREVIATURA(Abrev);
         }catch (Exception ex){
             Log.d("Error",ex.getMessage());
         }
 
     }
 
-    public int setEdificio(String nombre, int pisos, int aulas, String usuario){
+    public int setEdificio(String nombre, int pisos, int aulas, String usuario, String Abreviatura){
         METHOD_NAME="InsertarEdificio";
         SOAP_ACTION="http://apoyo.conteoutec.org/InsertarEdificio";
 
@@ -192,6 +200,7 @@ public class Edificios {
         request.addProperty("Num_plantas",pisos);
         request.addProperty("num_aulas",aulas);
         request.addProperty("usuario",usuario);
+        request.addProperty("Abreviatura",Abreviatura);
 
         envelope.dotNet=true;
         envelope.bodyOut=request;
@@ -288,6 +297,34 @@ public class Edificios {
             return false;
         }
     }
+
+    public boolean UpdateAbreviatura(String Abreviatura, String usuario,int ID_Edificio){
+        METHOD_NAME="Actualizar_Edificios_Abreviatura";
+        SOAP_ACTION="http://apoyo.conteoutec.org/Actualizar_Edificios_Abreviatura";
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("Abreviatura",Abreviatura);
+        request.addProperty("USuario",usuario);
+        request.addProperty("ID_Edificio",ID_Edificio);
+
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try {
+            transport.call(SOAP_ACTION, envelope);
+            SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
+
+            return Boolean.parseBoolean(respSoap.toString());
+        }
+        catch (Exception ex){
+            return false;
+        }
+    }
+
+
 
 
 

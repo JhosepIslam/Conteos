@@ -41,6 +41,10 @@
             android:id="@+id/nav_AgregarEdificio"
             android:icon="@drawable/ic_edif"
             android:title="Edificios"/>
+        <item
+            android:id="@+id/nav_AgregarLabs"
+            android:icon="@drawable/ic_labs"
+            android:title="Laboratorios"/>
 
         <item
             android:id="@+id/nav_Ciclos"
@@ -50,6 +54,10 @@
             android:id="@+id/nav_Parciales"
             android:icon="@drawable/ic_fecha"
             android:title="Parciales"/>
+        <item
+            android:id="@+id/nav_Reportes"
+            android:icon="@drawable/ic_reporte"
+            android:title="Reportes"/>
 
     </group>
 

@@ -95,6 +95,7 @@ public class AgregarEdificioFragment extends Fragment {
         final EditText editTextNombre = v.findViewById(R.id.txtSetNombreEdif);
         final EditText editTextPisos = v.findViewById(R.id.txtSetNumPlantasEdif);
         final EditText editTextAulas = v.findViewById(R.id.txtSetNumAulasEdif);
+        final EditText editTextAbreviatura = v.findViewById(R.id.txtSetAbreviatura);
 
         Button btnEnviar = v.findViewById(R.id.btnSaveED);
         Button btnCancelar = v.findViewById(R.id.btnCancelED);
@@ -116,12 +117,15 @@ public class AgregarEdificioFragment extends Fragment {
                     editTextPisos.setError("Campo Obligatorio");
                 }else if (editTextAulas.getText().toString().trim().isEmpty()){
                     editTextAulas.setError("Campo Obligatorio");
+                }else if (editTextAbreviatura.getText().toString().trim().isEmpty()){
+                    editTextAbreviatura.setError("Campo Obligatorio");
                 }
                 else {
                     String nombre = editTextNombre.getText().toString().trim();
+                    String abrev = editTextAbreviatura.getText().toString().trim();
                     int pisos = Integer.parseInt(editTextPisos.getText().toString().trim());
                     int aulas = Integer.parseInt(editTextAulas.getText().toString().trim());
-                    AsyncSet asyncSet = new AsyncSet(nombre,pisos,aulas);
+                    AsyncSet asyncSet = new AsyncSet(nombre,pisos,aulas,abrev);
                     asyncSet.execute();
                     alertDialog.dismiss();
                 }
@@ -130,7 +134,7 @@ public class AgregarEdificioFragment extends Fragment {
 
             return alertDialog ;
     }
-    private AlertDialog AlertModificar(final int ID , String nombre, int Aulas , int Pisos){
+    private AlertDialog AlertModificar(final int ID , String nombre, int Aulas , int Pisos,String Abrev){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -147,20 +151,37 @@ public class AgregarEdificioFragment extends Fragment {
         final LinearLayout linearLayoutNombre = v.findViewById(R.id.LLEditNombreEdificio);
         final LinearLayout linearLayoutAulas = v.findViewById(R.id.LLEditAulasEdificio);
         final LinearLayout linearLayoutPlantas = v.findViewById(R.id.LLEditPlantasEdificio);
+        final LinearLayout linearLayoutAbreviaura = v.findViewById(R.id.LLEditAbreviaturaEdificio);
+
 
         final CheckBox checkBoxNombre = v.findViewById(R.id.checkboxEditNombreEdificios_dialog);
         final CheckBox checkBoxAulas = v.findViewById(R.id.checkboxEditAulasEdificios_dialog);
         final CheckBox checkBoxPlantas = v.findViewById(R.id.checkboxEditPlantasEdificios_dialog);
+        final CheckBox checkBoxAbreviatura = v.findViewById(R.id.checkboxEditAbreviaturaEdificios_dialog);
 
         final EditText editTextNombre = v.findViewById(R.id.txtNuevoNombreEdificio_Edit);
         final EditText editTextPisos = v.findViewById(R.id.txtNuevasPlantas_Edit);
         final EditText editTextAulas = v.findViewById(R.id.txtNuevasAulasEdificio_Edit);
+        final EditText editTextAbreviatura = v.findViewById(R.id.txtNuevasAbreviatura_Edit);
+
 
         editTextAulas.setText(Aulas+"");
         editTextPisos.setText(Pisos+"");
         editTextNombre.setText(nombre+"");
+        editTextAbreviatura.setText(Abrev);
 
 
+
+        checkBoxAbreviatura.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    linearLayoutAbreviaura.setVisibility(View.VISIBLE);
+                }else {
+                    linearLayoutAbreviaura.setVisibility(View.GONE);
+                }
+            }
+        });
         checkBoxNombre.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -201,6 +222,17 @@ public class AgregarEdificioFragment extends Fragment {
                 String Nombre;
                 int Aulas,Pisos;
 
+                if (checkBoxAbreviatura.isChecked()){
+                    if (editTextAbreviatura.getText().toString().trim().isEmpty()){
+                        editTextAbreviatura.setError("Campo Obligatorio");
+                    }else {
+                        String ab = editTextAbreviatura.getText().toString().trim();
+                        AsyncUpdateAbrev asyncUpdateAbrev = new AsyncUpdateAbrev(ab,ID);
+                        asyncUpdateAbrev.execute();
+                        alertDialog.dismiss();
+
+                    }
+                }
                 if (checkBoxAulas.isChecked() && checkBoxNombre.isChecked() && checkBoxPlantas.isChecked()){
                     if (editTextNombre.getText().toString().trim().isEmpty()){
                         editTextNombre.setError("Comple este Campo");
@@ -226,11 +258,12 @@ public class AgregarEdificioFragment extends Fragment {
                         editTextAulas.setError("Comple este Campo");
 
                     }else {
-
+                        caso=1;
+                        Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
                         Aulas =Integer.parseInt(editTextAulas.getText().toString().trim());
                         Nombre =editTextNombre.getText().toString().trim();
-                        caso=1;
-                        AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,Aulas,0,ID,caso);
+
+                        AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,Aulas,Pisos,ID,caso);
                         asyncUpdate.execute();
                         alertDialog.dismiss();
 
@@ -244,10 +277,11 @@ public class AgregarEdificioFragment extends Fragment {
                         editTextPisos.setError("Comple este Campo");
                     }else {
 
-                        Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
-                        Aulas =Integer.parseInt(editTextAulas.getText().toString().trim());
-                        caso=2;
-                         AsyncUpdate asyncUpdate = new AsyncUpdate(null,Aulas,Pisos,ID,caso);
+                         Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
+                         Aulas =Integer.parseInt(editTextAulas.getText().toString().trim());
+                         Nombre =editTextNombre.getText().toString().trim();
+                         caso=2;
+                         AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,Aulas,Pisos,ID,caso);
                          asyncUpdate.execute();
                          alertDialog.dismiss();
                     }
@@ -259,9 +293,10 @@ public class AgregarEdificioFragment extends Fragment {
                         editTextPisos.setError("Comple este Campo");
                     }else {
                         Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
+                        Aulas =Integer.parseInt(editTextAulas.getText().toString().trim());
                         Nombre =editTextNombre.getText().toString().trim();
                         caso=3;
-                        AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,0,Pisos,ID,caso);
+                        AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,Aulas,Pisos,ID,caso);
                         asyncUpdate.execute();
                         alertDialog.dismiss();
 
@@ -272,9 +307,11 @@ public class AgregarEdificioFragment extends Fragment {
                     if (editTextAulas.getText().toString().trim().isEmpty()) {
                         editTextAulas.setError("Comple este Campo");
                     }else {
+                        Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
                         Aulas =Integer.parseInt(editTextAulas.getText().toString().trim());
+                        Nombre =editTextNombre.getText().toString().trim();
                         caso=4;
-                        AsyncUpdate asyncUpdate = new AsyncUpdate(null,Aulas,0,ID,caso);
+                        AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,Aulas,Pisos,ID,caso);
                         asyncUpdate.execute();
                         alertDialog.dismiss();
 
@@ -284,9 +321,11 @@ public class AgregarEdificioFragment extends Fragment {
                     if (editTextNombre.getText().toString().trim().isEmpty()){
                         editTextNombre.setError("Comple este Campo");
                     }else {
+                        Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
+                        Aulas =Integer.parseInt(editTextAulas.getText().toString().trim());
                         Nombre =editTextNombre.getText().toString().trim();
                         caso=5;
-                        AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,0,0,ID,caso);
+                        AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,Aulas,Pisos,ID,caso);
                         asyncUpdate.execute();
                         alertDialog.dismiss();
                     }
@@ -296,15 +335,16 @@ public class AgregarEdificioFragment extends Fragment {
                      if (editTextPisos.getText().toString().trim().isEmpty()){
                         editTextPisos.setError("Comple este Campo");
                     }else {
-                        Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
-                        caso=6;
-                         AsyncUpdate asyncUpdate = new AsyncUpdate(null,0,Pisos,ID,caso);
+                         Pisos=Integer.parseInt(editTextPisos.getText().toString().trim());
+                         Aulas =Integer.parseInt(editTextAulas.getText().toString().trim());
+                         Nombre =editTextNombre.getText().toString().trim();
+                         caso=6;
+                         AsyncUpdate asyncUpdate = new AsyncUpdate(Nombre,Aulas,Pisos,ID,caso);
                          asyncUpdate.execute();
                          alertDialog.dismiss();
 
                     }
                 }
-
             }
 
         });
@@ -323,12 +363,13 @@ public class AgregarEdificioFragment extends Fragment {
 
         ProgressDialog pDialog;
          int result;
-        String nombre;
+        String nombre,abrev;
         int num_p,num_au;
-        public AsyncSet(String nombre , int num_p, int num_au){
+        public AsyncSet(String nombre , int num_p, int num_au,String Abrev){
             this.nombre=nombre;
             this.num_p = num_p;
             this.num_au = num_au;
+            this.abrev = Abrev;
         }
         @Override
         protected void onPreExecute() {
@@ -341,7 +382,7 @@ public class AgregarEdificioFragment extends Fragment {
         }
         @Override
         protected Boolean doInBackground(Void... voids) {
-            result =edificios.setEdificio(nombre,num_p,num_au,usuario_);
+            result =edificios.setEdificio(nombre,num_p,num_au,usuario_,abrev);
             return true;
         }
 
@@ -392,11 +433,12 @@ public class AgregarEdificioFragment extends Fragment {
                 recyclerView = getView().findViewById(R.id.recyclerViewEdificio);
                 layoutManager = new LinearLayoutManager(getContext());
                 myAdapter = new EdificiosAdapter(edificios.getNOMBRE(), edificios.getNUM_PLANTAS()
-                        , edificios.getNUM_AULAS(), edificios.getID(), R.layout.card_view_edificios, new EdificiosAdapter.OnItemClickListener() {
+                        , edificios.getNUM_AULAS(), edificios.getID(),edificios.getABREVIATURA(), R.layout.card_view_edificios, new EdificiosAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(int id, String nombre, int Plantas, int Aulas, int position) {
-                        AlertModificar(id,nombre,Aulas,Plantas).show();
+                    public void onItemClick(int id, String nombre, int Plantas, int Aulas, String Abrev, int position) {
+                        AlertModificar(id,nombre,Aulas,Plantas,Abrev).show();
                     }
+
                 });
                 recyclerView.setAdapter(myAdapter);
                 recyclerView.setLayoutManager(layoutManager);
@@ -413,8 +455,30 @@ public class AgregarEdificioFragment extends Fragment {
 
         }
     }
+    public class AsyncUpdateAbrev extends AsyncTask<Void,Void,Boolean>{
+        String Abrev;
+        int ID;
+        public AsyncUpdateAbrev(String Abrev, int ID){
+            this.Abrev = Abrev;
+            this.ID = ID;
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            boolean a=edificios.UpdateAbreviatura(Abrev,usuario_,ID);
 
-    public class AsyncUpdate extends AsyncTask<Void,Void,Boolean>{
+            return a;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            AsyncGet asyncGet = new AsyncGet();
+            asyncGet.execute();
+        }
+    }
+
+
+        public class AsyncUpdate extends AsyncTask<Void,Void,Boolean>{
 
         String Nombre;
         int Aulas,Pisos,ID,caso;

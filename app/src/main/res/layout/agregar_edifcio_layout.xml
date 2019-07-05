@@ -43,6 +43,17 @@
                 android:inputType="number"
                 android:textColor="#fff" />
         </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/txtSetAbreviatura"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Abreviatura"
+                android:textColor="#fff" />
+        </android.support.design.widget.TextInputLayout>
         <LinearLayout
             android:layout_margin="10dp"
             android:layout_width="match_parent"
