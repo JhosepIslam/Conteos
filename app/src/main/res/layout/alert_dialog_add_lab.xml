@@ -41,31 +41,11 @@
             android:inputType="number"
             android:hint="Capacidad"/>
     </android.support.design.widget.TextInputLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:textColor="#fff"
-            android:id="@+id/txtEdificioLab"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="Edificio"
-            />
-        <CheckBox
-            android:id="@+id/checkboxEditarEdif"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="#fff"
-            android:text="Editar"/>
-    </LinearLayout>
 
     <LinearLayout
+        android:padding="5dp"
         android:id="@+id/textInput"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -77,7 +57,7 @@
             android:textColor="#fff"
             android:textSize="20dp" />
         <Spinner
-            android:id="@+id/spinnerEdificio"
+            android:id="@+id/spinnerEdificioadd"
             android:layout_weight="0.5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

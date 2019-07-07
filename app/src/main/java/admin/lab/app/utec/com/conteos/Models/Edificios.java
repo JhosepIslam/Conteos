@@ -298,28 +298,32 @@ public class Edificios {
         }
     }
 
-    public boolean UpdateAbreviatura(String Abreviatura, String usuario,int ID_Edificio){
+    public boolean UpdateAbrev(int id, String Abrev,String Usuario){
+
         METHOD_NAME="Actualizar_Edificios_Abreviatura";
         SOAP_ACTION="http://apoyo.conteoutec.org/Actualizar_Edificios_Abreviatura";
+
         HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-
+        String resultado;
         SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
-        request.addProperty("Abreviatura",Abreviatura);
-        request.addProperty("USuario",usuario);
-        request.addProperty("ID_Edificio",ID_Edificio);
-
+        request.addProperty("ID_edificio",id);
+        request.addProperty("Abreviatura",Abrev);
+        request.addProperty("USuario",Usuario);
         envelope.dotNet=true;
         envelope.bodyOut=request;
         envelope.setOutputSoapObject(request);
 
-        try {
-            transport.call(SOAP_ACTION, envelope);
-            SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
+        try{
+            transport.call(SOAP_ACTION,envelope);
+            SoapPrimitive respSoap=(SoapPrimitive) envelope.getResponse();
 
-            return Boolean.parseBoolean(respSoap.toString());
-        }
-        catch (Exception ex){
+            resultado=respSoap.toString();
+
+            return Boolean.parseBoolean(resultado);
+
+
+        }catch (Exception ex){
             return false;
         }
     }

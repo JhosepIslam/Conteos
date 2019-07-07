@@ -182,5 +182,37 @@ public class Laboratorios {
         }
     }
 
+    public boolean Add( String usuario,String Nombre,int capacidad, String Abreviatura, String Edificio){
+
+        METHOD_NAME="Insertar_Laboratorio";
+        SOAP_ACTION="http://apoyo.conteoutec.org/Insertar_Laboratorio";
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        String resultado;
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+
+        request.addProperty("nombre",Nombre);
+        request.addProperty("edificio",Edificio);
+        request.addProperty("capacidad",capacidad);
+        request.addProperty("abreviatura",Abreviatura);
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try{
+            transport.call(SOAP_ACTION,envelope);
+            SoapPrimitive respSoap=(SoapPrimitive) envelope.getResponse();
+
+            resultado=respSoap.toString();
+
+            return Boolean.parseBoolean(resultado);
+
+
+        }catch (Exception ex){
+            return false;
+        }
+    }
+
 
 }

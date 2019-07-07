@@ -40,7 +40,6 @@ public class AgregarEdificioFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter myAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    AsyncGet asyncGet = new AsyncGet();
     final Edificios edificios = new Edificios();
 
 
@@ -74,6 +73,7 @@ public class AgregarEdificioFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         floatingActionButton = getView().findViewById(R.id.fabAdd);
         shimmerFrameLayout = getView().findViewById(R.id.shimmerLayout);
+        AsyncGet asyncGet = new AsyncGet();
         asyncGet.execute();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -406,16 +406,10 @@ public class AgregarEdificioFragment extends Fragment {
         }
     }
     public class AsyncGet extends AsyncTask<Void,Void,Boolean>{
-        ProgressDialog pDialog;
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             edificios.getEdificioFromServer();
-            try {
-                Thread.sleep(2000);
-
-            } catch(InterruptedException e) {
-
-            }
             return null;
         }
 
@@ -464,7 +458,7 @@ public class AgregarEdificioFragment extends Fragment {
         }
         @Override
         protected Boolean doInBackground(Void... voids) {
-            boolean a=edificios.UpdateAbreviatura(Abrev,usuario_,ID);
+            boolean a=edificios.UpdateAbrev(ID,Abrev,usuario_);
 
             return a;
         }
@@ -472,6 +466,11 @@ public class AgregarEdificioFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            if (aBoolean){
+                Toast.makeText(getContext(),"Abreviatura Actualizada",Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getContext(),"Error al Actualizar",Toast.LENGTH_SHORT).show();
+            }
             AsyncGet asyncGet = new AsyncGet();
             asyncGet.execute();
         }
