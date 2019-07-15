@@ -54,6 +54,7 @@ public class AgregarConteoFragment extends Fragment {
     AlertDialog alertDialog;
     EditText txtAsistencia;
     Boolean flag= false;
+    private LinearLayout LLFechaParciales;
     ShimmerFrameLayout shimmerFrameLayout;
     int ID_ASISTENCIA;
     private LinearLayout LLfiltroEdificio;
@@ -93,11 +94,14 @@ public class AgregarConteoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Toast.makeText(getContext(),"Toca la Clase para Insertar Conteo",Toast.LENGTH_LONG).show();
         shimmerFrameLayout = getView().findViewById(R.id.shimmerLayoutConteo);
         swipeRefreshLayout = getView().findViewById(R.id.refreshLayout);
         spinnerEdificios = getView().findViewById(R.id.spEdificioConteoFiltro);
         spinnerHoras = getView().findViewById(R.id.txtHoraContFiltro);
         LLfiltroEdificio = getView().findViewById(R.id.LLFiltroEdificioClases);
+        LLFechaParciales = getView().findViewById(R.id.LLFechadeParciales);
 
 
         if (nivel_==4){
@@ -130,14 +134,12 @@ public class AgregarConteoFragment extends Fragment {
         spinnerEdificios.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item ;
-                String hora;
-                try {
 
-                    item = spinnerEdificios.getSelectedItem().toString();
-                    hora=spinnerHoras.getSelectedItem().toString();
-                    Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
-                    async_get_clases.execute();
+                try {
+                    Async_get_horas async_get_horas = new Async_get_horas(spinnerEdificios.getSelectedItem().toString());
+                    async_get_horas.execute();
+                   // Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
+                    //async_get_clases.execute();
 
                 }catch (Exception ex){}
 
@@ -161,6 +163,8 @@ public class AgregarConteoFragment extends Fragment {
                 }else {
                     item = spinnerEdificios.getSelectedItem().toString();
                     hora=spinnerHoras.getSelectedItem().toString();
+                        Async_Verificar async_verificar = new Async_Verificar(spinnerHoras.getSelectedItem().toString());
+                        async_verificar.execute();
                     Async_get_Clases async_get_clases = new Async_get_Clases(item,hora);
                     async_get_clases.execute();
                     }
@@ -374,12 +378,13 @@ public class AgregarConteoFragment extends Fragment {
                                 if (txtComentario.getText().toString().trim().isEmpty()) {
                                     txtComentario.setError("Requerido");
                                 } else {
-                                    async_falta_set = new Async_Falta_set(id_clase, usuario_, txtComentario.getText().toString().trim(), radioButton8.getText().toString().trim(), "");
+
+                                    async_falta_set = new Async_Falta_set(id_clase, usuario_, txtComentario.getText().toString().trim(), radioButton8.getText().toString().trim(), spinnerHoras.getSelectedItem().toString());
                                     async_falta_set.execute();
                                     alertDialog.dismiss();
                                 }
                             } else {
-                                async_falta_set = new Async_Falta_set(id_clase, usuario_, "Falta", detall, "");
+                                async_falta_set = new Async_Falta_set(id_clase, usuario_, "Falta", detall, spinnerHoras.getSelectedItem().toString());
                                 async_falta_set.execute();
                                 alertDialog.dismiss();
                             }
@@ -433,12 +438,12 @@ public class AgregarConteoFragment extends Fragment {
         return alertDialog ;
     }
     public class Async_get_edif extends AsyncTask<Void,Void,Boolean> {
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             if (nivel_!=4){
             edificios.Get_Edificios_Dias_fromServer(usuario_, nivel_);
             }
-            clases.Get_Horas_Clases_fromServer(nivel_,usuario_);
             clases.Get_Faltas_fromServer();
             return null;
         }
@@ -452,11 +457,66 @@ public class AgregarConteoFragment extends Fragment {
                     final ArrayAdapter spinnerAdapterEdificio = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, edificios.getNOMBRE());
                     spinnerEdificios.setAdapter(spinnerAdapterEdificio);
                 }
+                Async_get_horas async_get_horas = new Async_get_horas(spinnerEdificios.getSelectedItem().toString());
+                async_get_horas.execute();
+            }catch (Exception ex){}
+
+
+        }
+    }
+
+    public class Async_get_horas extends AsyncTask<Void,Void,Boolean> {
+
+        private String edificio;
+        private Async_get_horas(String edificio){
+            this.edificio= edificio;
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            clases.Get_Horas_Clases_fromServer(nivel_,usuario_,edificio);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            try {
                 final ArrayAdapter spinnerAdapterHoras = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,clases.getHORAS_CLASES());
                 spinnerHoras.setAdapter(spinnerAdapterHoras);
+
             }catch (Exception ex){}
         }
     }
+    public class Async_Verificar extends AsyncTask<Void,Void,Boolean> {
+        private String hora;
+        private int result;
+        public  Async_Verificar(String hora){
+            this.hora = hora;
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            result =clases.Comprobar_Parcial(hora);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            switch (result ){
+                case 1:
+                    LLFechaParciales.setVisibility(View.VISIBLE);
+                    break;
+                case 0:
+                    LLFechaParciales.setVisibility(View.GONE);
+                    break;
+                    default:
+                        LLFechaParciales.setVisibility(View.GONE);
+                        break;
+            }
+        }
+    }
+
     public class Async_get_Clases extends AsyncTask<Void,Void,Boolean> {
         String edifio,hora;
         public  Async_get_Clases(String edifio, String hora){
@@ -478,12 +538,13 @@ public class AgregarConteoFragment extends Fragment {
                 clases.Get_Clases_FromServer(edifio, hora,usuario_,nivel_);
             }
                 clases.Get_All_Conteo(hora);
+                clases.Get_All_Faltas(hora);
                 clases.Get_Faltas_fromServer();
-            try {
-                Thread.sleep(2000);
-            }catch (Exception ex){
+          //  try {
+            //    Thread.sleep(2000);
+            //}catch (Exception ex){
 
-            }
+            //}
             return null;
         }
 
@@ -495,10 +556,12 @@ public class AgregarConteoFragment extends Fragment {
                 layoutManager = new LinearLayoutManager(getContext());
 
                 myAdapter = new ConteosAdapter(clases.getID_CLASES(),clases.getINCRITOS(),clases.getMATERIAS(), clases.getAULAS(), clases.getDOCENTE(),
-                        clases.getHORA(), clases.getDIAS(), clases.getSECCION(),clases.getID_MATERIA_CONTRO(),clases.getCANTIDAD_CONTEO(), R.layout.card_view_conteo, new ConteosAdapter.OnItemClickListener() {
+                        clases.getHORA(), clases.getDIAS(), clases.getSECCION(),clases.getID_MATERIA_CONTRO(),clases.getCANTIDAD_CONTEO(),clases.getID_MATERIA_FALTA(),clases.getDETALLE(), R.layout.card_view_conteo, new ConteosAdapter.OnItemClickListener() {
                     @Override
                     public void OnItemClick(int id, int incritos, int Position) {
-                        Async_Conteo_get async_conteo_get = new Async_Conteo_get(id);
+
+                        String hora = spinnerHoras.getSelectedItem().toString();
+                        Async_Conteo_get async_conteo_get = new Async_Conteo_get(id,hora);
                         async_conteo_get.execute();
                         DialogInsertCount(id,incritos).show();
                     }
@@ -556,13 +619,15 @@ public class AgregarConteoFragment extends Fragment {
     }
     public class Async_Conteo_get extends AsyncTask<Void,Void,Boolean> {
         int id ;
+        String hora;
 
-        public Async_Conteo_get(int id){
+        public Async_Conteo_get(int id, String hora){
             this.id=id;
+            this.hora = hora;
         }
         @Override
         protected Boolean doInBackground(Void... voids) {
-            clases.Get_conteo_fromServer(id);
+            clases.Get_conteo_fromServer(id,hora);
             flag =false;
 
             return null;

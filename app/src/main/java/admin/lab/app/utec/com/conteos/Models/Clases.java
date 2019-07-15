@@ -22,7 +22,24 @@ public class Clases {
     private  ArrayList HORAS_CLASES;
 
     private  ArrayList ID_CLASES, MATERIAS, CODIGO, DOCENTE, AULAS, EDIFICIO,
-                        DIAS, SECCION, INCRITOS, HORA ,ID_MATERIA_CONTRO ,CANTIDAD_CONTEO;
+                        DIAS, SECCION, INCRITOS, HORA ,ID_MATERIA_CONTRO ,CANTIDAD_CONTEO,ID_MATERIA_FALTA ,DETALLE;
+
+    public ArrayList getID_MATERIA_FALTA() {
+        return ID_MATERIA_FALTA;
+    }
+
+    public void setID_MATERIA_FALTA(ArrayList ID_MATERIA_FALTA) {
+        this.ID_MATERIA_FALTA = ID_MATERIA_FALTA;
+    }
+
+    public ArrayList getDETALLE() {
+        return DETALLE;
+    }
+
+    public void setDETALLE(ArrayList DETALLE) {
+        this.DETALLE = DETALLE;
+    }
+
 
 
     public ArrayList getHORAS_CLASES() {
@@ -423,6 +440,57 @@ public class Clases {
         }
 
     }
+
+    public void  Get_All_Faltas(String  Hora){
+
+        METHOD_NAME="Get_ALL_FALTASJSON";
+        SOAP_ACTION="http://apoyo.conteoutec.org/Get_ALL_FALTASJSON";
+
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        String resultado;
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("hora",Hora);
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try{
+            transport.call(SOAP_ACTION,envelope);
+            SoapPrimitive respSoap=(SoapPrimitive) envelope.getResponse();
+
+            resultado=respSoap.toString();
+            JSONObject jsonObj = new JSONObject(resultado);
+            JSONArray obtener = jsonObj.getJSONArray("Table");
+
+            int a=obtener.length();
+            ArrayList ids = new ArrayList<String>() ;
+            ArrayList detalles = new ArrayList<String>() ;
+            for (int i = 0; i < a; i++)
+            {
+                JSONObject v = obtener.getJSONObject(i);
+                String id =v.getString("ID_CLASE");
+                String detalle =v.getString("DETALLE");
+                String comentario =v.getString("COMENTARIO");
+
+                if (!id.isEmpty() && id !=null){
+                    ids.add(id);
+                    if (detalle.equals("Otro")){
+                        detalles.add(comentario);
+                    }else {
+                        detalles.add(detalle);
+                    }
+                }
+            }
+            setID_MATERIA_FALTA(ids);
+            setDETALLE(detalles);
+
+        }catch (Exception ex){
+            System.out.println("a");
+        }
+
+    }
     public void  Get_Faltas_fromServer(){
 
         METHOD_NAME="Get_detalle_faltaJSON";
@@ -494,6 +562,45 @@ public class Clases {
             return false;
         }
     }
+
+
+    public int Comprobar_Parcial(String hora){
+
+        METHOD_NAME="Verificar_fecha_ParcialJSON";
+        SOAP_ACTION="http://apoyo.conteoutec.org/Verificar_fecha_ParcialJSON";
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        String resultado;
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("hora",hora);
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try{
+            transport.call(SOAP_ACTION,envelope);
+            SoapPrimitive respSoap=(SoapPrimitive) envelope.getResponse();
+
+            resultado=respSoap.toString();
+            JSONObject jsonObj = new JSONObject(resultado);
+            JSONArray obtener = jsonObj.getJSONArray("Table");
+
+            int a=obtener.length();
+            int result=0;
+            for (int i = 0; i < a; i++)
+            {
+                JSONObject v = obtener.getJSONObject(i);
+                 result =v.getInt("RESULTADO");
+
+            }
+            return result;
+
+
+        }catch (Exception ex){
+            return 0;
+        }
+    }
     public boolean Set_Falta(int id, String usuario,String detalle ,String comentario, String hora){
 
         METHOD_NAME="Insertar_Falta";
@@ -525,7 +632,7 @@ public class Clases {
             return false;
         }
     }
-    public void  Get_conteo_fromServer(int id){
+    public void  Get_conteo_fromServer(int id,String hora){
 
         METHOD_NAME="Get_Conteo_ifExistJSON";
         SOAP_ACTION="http://apoyo.conteoutec.org/Get_Conteo_ifExistJSON";
@@ -535,6 +642,7 @@ public class Clases {
         String resultado;
         SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
         request.addProperty("id",id);
+        request.addProperty("hora",hora);
 
         envelope.dotNet=true;
         envelope.bodyOut=request;
@@ -565,7 +673,7 @@ public class Clases {
         }
     }
 
-    public void  Get_Horas_Clases_fromServer(int nivel, String usuario){
+    public void  Get_Horas_Clases_fromServer(int nivel, String usuario,String edificio){
 
         Facultades facultades = new Facultades();
         int facultad_id = facultades.get_facultad(usuario);
@@ -588,12 +696,16 @@ public class Clases {
 
         String resultado;
         SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        if (nivel != 4){
+            request.addProperty("edificio",edificio);
+        }
         if (nivel == 4){
             request.addProperty("usuario",usuario);
         }
         else if (nivel != 2){
-
             request.addProperty("facultad",facultad_id);
+
+
         }
         envelope.dotNet=true;
         envelope.bodyOut=request;

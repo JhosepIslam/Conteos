@@ -81,6 +81,7 @@ public class AgreagarUsuarioFragment extends Fragment {
          btnCancelar=getView().findViewById(R.id.btnCancelUserRegister);
          btnRegistrar = getView().findViewById(R.id.btnRegistrarUser);
          spNivel= getView().findViewById(R.id.spinnerTipoUserUsuario);
+
          spFacultad = getView().findViewById(R.id.spinnerFacultadUser);
          txtNombre= getView().findViewById(R.id.txtNombreUsuario);
          txtCarnet= getView().findViewById(R.id.txtCarnetUsuario);

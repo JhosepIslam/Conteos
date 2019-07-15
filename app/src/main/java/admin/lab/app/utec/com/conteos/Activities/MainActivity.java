@@ -94,8 +94,13 @@ public class MainActivity extends AppCompatActivity
             case 5:
                 lvl="Instructor";
                 break;
+            case 33:
+                lvl = "Asistente";
+                nivel=3;
+                break;
 
         }
+
         levelU.setText(lvl);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -230,10 +235,14 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_AgregarUSuarios).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarConteo).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 break;
             case 2:
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 break;
             case 3:
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
+                nav_Menu.findItem(R.id.nav_AgregarLabs).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
@@ -244,6 +253,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 4:
                 nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
+                nav_Menu.findItem(R.id.nav_AgregarLabs).setVisible(false);
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
@@ -253,6 +264,8 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_Clases_inf).setVisible(false);
                 break;
             case 5:
+                nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
+                nav_Menu.findItem(R.id.nav_AgregarLabs).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Clases).setVisible(false);

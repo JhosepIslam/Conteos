@@ -127,7 +127,7 @@ public class Laboratorios {
                 JSONObject v = obtener.getJSONObject(i);
                 String nombre =v.getString("LABORATORIO");
                 String abrev =v.getString("ABREVIATURA");
-                if (abrev.equals(null)){
+                if (abrev.equals(null) || abrev.isEmpty()){
                     abrev="-";
                 }
                 if (!nombre.isEmpty() && nombre !=null){

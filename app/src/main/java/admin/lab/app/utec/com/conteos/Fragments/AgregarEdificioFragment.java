@@ -71,6 +71,7 @@ public class AgregarEdificioFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Toast.makeText(getContext(),"Toca el Edificio para Editar",Toast.LENGTH_LONG).show();
         floatingActionButton = getView().findViewById(R.id.fabAdd);
         shimmerFrameLayout = getView().findViewById(R.id.shimmerLayout);
         AsyncGet asyncGet = new AsyncGet();

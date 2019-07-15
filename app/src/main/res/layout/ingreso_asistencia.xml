@@ -13,14 +13,17 @@
             android:textStyle="bold"
             android:textColor="#fff"
             android:layout_gravity="center"/>
-        <EditText
-            android:id="@+id/txtAsistencia"
-            android:hint="Ingrese La Cantidad"
-            android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:textColor="#fff"
-            android:layout_height="wrap_content"
-            android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/txtAsistencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese La Cantidad"
+        android:inputType="number"
+        android:singleLine="true"
+        android:maxLength="3"
+        android:textAlignment="center"
+        android:textColor="#fff" />
 
         <CheckBox
             android:id="@+id/checkboxSinAsistencia"
@@ -98,6 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Comentario"
+                android:textColor="#fff"
+                android:maxLength="60"
                 android:inputType="textMultiLine"
                 android:visibility="gone"/>
         </android.support.design.widget.TextInputLayout>

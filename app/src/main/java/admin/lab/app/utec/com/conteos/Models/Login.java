@@ -4,6 +4,8 @@ package admin.lab.app.utec.com.conteos.Models;
 import android.util.Log;
 import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 
 import org.ksoap2.serialization.SoapObject;
@@ -72,6 +74,10 @@ public class Login  {
 
             SoapPrimitive response =(SoapPrimitive) envelope.getResponse();
             resul= Integer.parseInt(response.toString());
+            int verif =Asistente_Verificacion();
+            if (verif ==1 && resul ==3){
+                resul = 33;
+            }
         }
         catch (Exception ex) {
             resul = -1;
@@ -80,7 +86,45 @@ public class Login  {
 
         return  resul;
     }
+    public  int Asistente_Verificacion()
+    {
+        int resul = 0;
 
+        String METHOD_NAME="Verificar_AsistenteJSON";
+        String SOAP_ACTION="http://apoyo.conteoutec.org/Verificar_AsistenteJSON";
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        String resultado;
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("usuario",Usuario);
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try{
+            transport.call(SOAP_ACTION,envelope);
+            SoapPrimitive respSoap=(SoapPrimitive) envelope.getResponse();
+
+            resultado=respSoap.toString();
+            JSONObject jsonObj = new JSONObject(resultado);
+            JSONArray obtener = jsonObj.getJSONArray("Table");
+
+            int a=obtener.length();
+            int result=0;
+            for (int i = 0; i < a; i++)
+            {
+                JSONObject v = obtener.getJSONObject(i);
+                result =v.getInt("RESULTADO");
+
+            }
+            return result;
+
+
+        }catch (Exception ex){
+            return 0;
+        }
+    }
 
 
 

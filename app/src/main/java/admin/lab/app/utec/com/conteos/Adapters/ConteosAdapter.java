@@ -18,12 +18,12 @@ import admin.lab.app.utec.com.conteos.R;
 public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHolder> {
 
     private List<String> Materia,Aula,Docente,Horas,Dias,Seccion,Id_clase,Inscritos;
-    ArrayList ID_materia_contada,cantiadad_contada;
+    ArrayList ID_materia_contada,cantiadad_contada,Id_materia_falta,detalle;
     private OnItemClickListener itemClickListener;
     private int layout;
 
     public ConteosAdapter(List<String> Id_clase,List<String> Inscritos,List<String> Materia,List<String> Aula,List<String>
-            Docente,List<String> Horas,List<String> Dias,List<String> Seccion,ArrayList ID_materia_contada,ArrayList cantiadad_contada,
+            Docente,List<String> Horas,List<String> Dias,List<String> Seccion,ArrayList ID_materia_contada,ArrayList cantiadad_contada,ArrayList Id_materia_falta,ArrayList detalle,
                           int layout, OnItemClickListener ItemClickListener){
         
         this.Materia=Materia;
@@ -38,6 +38,8 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
         this.cantiadad_contada = cantiadad_contada;
         this.Inscritos = Inscritos;
         this.itemClickListener=ItemClickListener;
+        this.detalle = detalle;
+        this.Id_materia_falta = Id_materia_falta;
     }
     @NonNull
     @Override
@@ -53,7 +55,7 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
         viewHolder.bind(Integer.parseInt(Id_clase.get(position)),Integer.parseInt(Inscritos.get(position)),Materia.get(position),Aula.get(position),
-                Docente.get(position),Horas.get(position),Dias.get(position),Seccion.get(position),ID_materia_contada,cantiadad_contada,itemClickListener);
+                Docente.get(position),Horas.get(position),Dias.get(position),Seccion.get(position),ID_materia_contada,cantiadad_contada,detalle,Id_materia_falta,itemClickListener);
     }
     @Override
     public int getItemCount() {
@@ -81,7 +83,7 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
         }
 
         public void bind(final int id, final int inscritos , final String Materia, final String Aula, final String Docente,
-                         final String Horas, final String Dias, final String Seccion, final ArrayList ID_materia_contada ,final ArrayList Cantidad ,
+                         final String Horas, final String Dias, final String Seccion, final ArrayList ID_materia_contada ,final ArrayList Cantidad ,final ArrayList Detalle, final ArrayList ID_Materia_falta ,
                          final OnItemClickListener listener ){
             this.txtMateria.setText("Materia: "+Materia);
             this.txtAula.setText("Aula: "+Aula);
@@ -92,9 +94,13 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
             this.txtIncritos.setText("Inscritos: "+inscritos);
             try {
                 int index = ID_materia_contada.indexOf(""+id);
+                int indexF = ID_Materia_falta.indexOf(""+id);
                 if (index != -1){
                     String cant =Cantidad.get(index).toString();
                     this.txtConteo.setText("Ultimo Conteo: "+cant);
+                }else if (indexF !=-1){
+                    String detalle =Detalle.get(indexF).toString();
+                    this.txtConteo.setText("Falta: "+detalle);
                 }
                 else {
                     this.txtConteo.setText("Ultimo Conteo: -");

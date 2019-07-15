@@ -96,7 +96,6 @@ public class CicloFragment extends Fragment {
             public void onClick(View view) {
                 try {
 
-
                     String inicio, fin, anio,ai;
                     inicio = textViewInicio01.getText().toString().substring(7,18);
                     fin =textViewFin01.getText().toString().substring(5,15);
@@ -138,7 +137,7 @@ public class CicloFragment extends Fragment {
                     fin =textViewFin03.getText().toString().substring(5,15);
                     ai =textViewEstado03.getText().toString().trim();
                     anio = textViewCiclo03.getText().toString().substring(10,14);
-                    AlertModificar(1,inicio,fin,ai,textViewCiclo03.getText().toString(),anio).show();
+                    AlertModificar(3,inicio,fin,ai,textViewCiclo03.getText().toString(),anio).show();
                 }catch (Exception ex){
 
                 }
@@ -222,6 +221,7 @@ public class CicloFragment extends Fragment {
         });
         Button btnEnviar = v.findViewById(R.id.btnEnviarCiclo_dialog);
         Button btnCancelar = v.findViewById(R.id.btnCacelarCiclo_dialog);
+
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -516,6 +516,7 @@ public class CicloFragment extends Fragment {
                 }
 
                 if (mod){
+
                     if (!validarFecha(Fecha_Inicio)){
                         editTextInicio.setError("Fecha no Valida");
                         editTextInicio.requestFocus();
