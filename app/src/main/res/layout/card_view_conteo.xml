@@ -74,21 +74,31 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_weight="1"
                     android:textColor="#fff"
                     android:id="@+id/txtSeccion"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="Sección:" />
 
                 <TextView
+                    android:layout_weight="1"
                     android:textColor="#fff"
                     android:id="@+id/txtDias"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="Dias:" />
+
             </LinearLayout>
+            <TextView
+                android:id="@+id/txtFacultad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Facultad"
+                android:textColor="#fff"
+                android:layout_margin="15dp"/>
             <LinearLayout
 
                 android:layout_width="match_parent"
@@ -96,17 +106,28 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_weight="1"
+
                     android:textColor="#fff"
                     android:id="@+id/txtInscitos"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="Inscritos:" />
+                <TextView
+                    android:layout_weight="1"
+                    android:textColor="#fff"
+                    android:id="@+id/txtCiclo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="Ciclo:" />
 
                 <TextView
+                    android:layout_weight="1"
                     android:textColor="#fff"
                     android:id="@+id/txtUltimoConteo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:ellipsize="end"

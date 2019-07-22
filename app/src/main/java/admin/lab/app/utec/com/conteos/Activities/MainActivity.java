@@ -245,7 +245,6 @@ public class MainActivity extends AppCompatActivity
                 nav_Menu.findItem(R.id.nav_AgregarLabs).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Reportes).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Parciales).setVisible(false);
-                nav_Menu.findItem(R.id.nav_Clases).setVisible(false);
                 nav_Menu.findItem(R.id.nav_AgregarEdificio).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Ciclos).setVisible(false);
                 nav_Menu.findItem(R.id.nav_Usuarios).setVisible(false);

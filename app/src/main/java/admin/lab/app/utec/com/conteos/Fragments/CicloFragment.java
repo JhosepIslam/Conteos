@@ -2,18 +2,21 @@ package admin.lab.app.utec.com.conteos.Fragments;
 
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import admin.lab.app.utec.com.conteos.Models.Ciclo;
 import admin.lab.app.utec.com.conteos.R;
@@ -37,6 +41,7 @@ public class CicloFragment extends Fragment {
     Ciclo ciclo = new Ciclo();
     TextView textViewCiclo01,textViewInicio01,textViewFin01,
     textViewEstado01;
+    public final Calendar c = Calendar.getInstance();
 
     TextView textViewCiclo02,textViewInicio02,textViewFin02,
             textViewEstado02;
@@ -185,6 +190,77 @@ public class CicloFragment extends Fragment {
          editTextInicio = v.findViewById(R.id.txtNuevasFechaInicio_Edit);
          editTextFin= v.findViewById(R.id.txtNuevasFechaFin_Edit);
          editTextAnio= v.findViewById(R.id.txtNuevoAnioCiclo_Edit);
+
+
+        editTextInicio.setInputType(InputType.TYPE_NULL);
+        editTextInicio.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        editTextFin.setInputType(InputType.TYPE_NULL);
+        editTextFin.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        final DatePickerDialog.OnDateSetListener dateInicio = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                int mes = monthOfYear+1;
+                if (dayOfMonth <= 9 &&  monthOfYear <=9) {
+                    editTextInicio.setText( year+"-0"+mes+"-0"+dayOfMonth);
+                } else if (dayOfMonth <= 9 ){
+                    editTextInicio.setText( year+"-"+mes+"-0"+dayOfMonth);
+                }else if (mes <=9){
+                    editTextInicio.setText( year+"-0"+mes+"-"+dayOfMonth);
+                }else {
+                    editTextInicio.setText( year+"-"+mes+"-"+dayOfMonth);
+                }
+
+            }
+
+        };
+
+        final DatePickerDialog.OnDateSetListener dateFin = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                int mes = monthOfYear+1;
+                if (dayOfMonth <= 9 &&  monthOfYear <=9) {
+                    editTextFin.setText( year+"-0"+mes+"-0"+dayOfMonth);
+                } else if (dayOfMonth <= 9 ){
+                    editTextFin.setText( year+"-"+mes+"-0"+dayOfMonth);
+                }else if (mes <=9){
+                    editTextFin.setText( year+"-0"+mes+"-"+dayOfMonth);
+                }else {
+                    editTextFin.setText( year+"-"+mes+"-"+dayOfMonth);
+                }
+
+            }
+
+        };
+        editTextFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getContext(), dateFin, c
+                        .get(Calendar.YEAR), c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        editTextInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getContext(), dateInicio, c
+                        .get(Calendar.YEAR), c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
 
         checkBoxInicio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

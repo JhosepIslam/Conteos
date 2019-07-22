@@ -51,7 +51,7 @@ public class UsuariosFragment extends Fragment {
         private RecyclerView recyclerView;
         String usuario_,nivel_;
         ShimmerFrameLayout shimmerFrameLayout;
-        private EditText editTextNueva;
+        private EditText editTextNueva , editTextNombre ,editTextApellido;
         private EditText editTextRepetir;
         private RecyclerView.Adapter myAdapter;
         private RecyclerView.LayoutManager layoutManager;
@@ -123,7 +123,7 @@ public class UsuariosFragment extends Fragment {
             fragment.setArguments(args);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment,tag).commit();
         }
-        private AlertDialog Alert(final int id_Usuario , String Nombre, String Usuario , String Facultad , String Nivel, String Lab, final String Estado){
+        private AlertDialog Alert(final int id_Usuario , String Nombre,String Apellido, String Usuario , String Facultad , String Nivel, String Lab, final String Estado){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View v = inflater.inflate(R.layout.info_usuario_dialog, null);
@@ -132,6 +132,7 @@ public class UsuariosFragment extends Fragment {
 
             final LinearLayout linearLayoutPassEdit = v.findViewById(R.id.LLEditPassWord);
             final LinearLayout linearLayoutPass1Edit = v.findViewById(R.id.LLEditPassWord1);
+            final LinearLayout linearLayoutNombreEdit = v.findViewById(R.id.LLEditNombres);
 
             final LinearLayout linearLayoutFacultad = v.findViewById(R.id.LLEditFacultad);
             final LinearLayout linearLayoutLabEdit = v.findViewById(R.id.LLEditLab);
@@ -140,7 +141,7 @@ public class UsuariosFragment extends Fragment {
             Spinner spinnerNivels = v.findViewById(R.id.sp_editNivel);
             final Spinner spinnerLab = v.findViewById(R.id.sp_editLaboratorio);
 
-            TextView textViewNombre = v.findViewById(R.id.textViewNombre_dialog);
+            final TextView textViewNombre = v.findViewById(R.id.textViewNombre_dialog);
             TextView textViewUsuario = v.findViewById(R.id.textViewUsuario_dialog);
             TextView textViewNivel = v.findViewById(R.id.textViewNivel_dialog);
             TextView textViewFacultad = v.findViewById(R.id.textViewFacutad_dialog);
@@ -150,11 +151,17 @@ public class UsuariosFragment extends Fragment {
             editTextNueva   =    v.findViewById(R.id.txtContraseñaNueva_Edit);
             editTextRepetir  = v.findViewById(R.id.txtContraseñaNuevaRepetir_Edit);
 
+            editTextApellido  = v.findViewById(R.id.txtApellido_Edit);
+            editTextNombre  = v.findViewById(R.id.txtNombre_Edit);
+            editTextNombre.setText(Nombre);
+            editTextApellido.setText(Apellido);
+
             final CheckBox checkBoxLabEdit = v.findViewById(R.id.checkboxEditLaboratorio_dialog);
             final CheckBox checkBoxPassEdit = v.findViewById(R.id.checkboxEditPass_dialog);
             final CheckBox checkBoxFacultadEdit = v.findViewById(R.id.checkboxEditFacult_dialog);
             final CheckBox checkBoxResetPass = v.findViewById(R.id.checkboxResetPassWord);
             final CheckBox checkBoxEstadoEdit = v.findViewById(R.id.checkboxEditEstado_dialog);
+            final CheckBox checkBoxNombreEdit = v.findViewById(R.id.checkboxEditNombres_dialog);
             if (Estado =="Activo"){
                 checkBoxEstadoEdit.setText("Desactivar");
             }else {
@@ -171,6 +178,17 @@ public class UsuariosFragment extends Fragment {
 
 
 
+            checkBoxNombreEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b){
+                        linearLayoutNombreEdit.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        linearLayoutNombreEdit.setVisibility(View.GONE);
+                    }
+                }
+            });
             checkBoxPassEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -220,7 +238,7 @@ public class UsuariosFragment extends Fragment {
 
             textViewFacultad.setText(Facultad);
             textViewNivel.setText(Nivel);
-            textViewNombre.setText(Nombre);
+            textViewNombre.setText(Nombre+" "+Apellido);
             textViewUsuario.setText(Usuario);
 
             switch (Nivel){
@@ -247,6 +265,20 @@ public class UsuariosFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     AsyncModificar asyncModificar;
+
+                    if (checkBoxNombreEdit.isChecked()){
+                        if (textViewNombre.getText().toString().trim().isEmpty()){
+                            editTextNombre.setError("Requerido");
+                        }else if (editTextApellido.getText().toString().trim().isEmpty()){
+                            editTextApellido.setError("Requerido");
+                        }else {
+
+                            AsyncModificarNombre asyncModificarNombre = new AsyncModificarNombre(id_Usuario,editTextNombre.getText().toString().trim(),editTextApellido.getText().toString().trim());
+                            asyncModificarNombre.execute();
+                            alertDialog.dismiss();
+                        }
+
+                    }
                     if (checkBoxEstadoEdit.isChecked()){
                         //
                         int EstadO_N =1;
@@ -357,9 +389,13 @@ public class UsuariosFragment extends Fragment {
                         }
                     }
                     else {
-                        alertDialog.dismiss();
+                        if (!checkBoxNombreEdit.isChecked())
+                            alertDialog.dismiss();
                     }
+
+
                 }
+
             });
             btnCancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -408,6 +444,28 @@ public class UsuariosFragment extends Fragment {
                 super.onPostExecute(aBoolean);
                 AsyncGet asyncGet = new AsyncGet();
                 asyncGet.execute();
+            }
+        }
+        private class AsyncModificarNombre extends AsyncTask<Void,Void,Boolean> {
+            int id_usuario_update;
+            String nombre, apellido;
+            private AsyncModificarNombre(int id_usuario_update, String nombre, String apellido){
+                this.apellido = apellido;
+                this.nombre = nombre;
+                this.id_usuario_update= id_usuario_update;
+            }
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                return  modificaciones.UpdateNombre(id_usuario_update,nombre,apellido,usuario_);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (aBoolean){
+                    AsyncGet asyncGet = new AsyncGet();
+                    asyncGet.execute();
+                }
             }
         }
         public class AsyncModificar extends AsyncTask<Void,Void,Boolean> {
@@ -498,12 +556,7 @@ public class UsuariosFragment extends Fragment {
             @Override
             protected Boolean doInBackground(Void... voids) {
                 usuarios.getUsuariosFromServer();
-                try {
-                    Thread.sleep(2000);
 
-                } catch(InterruptedException e) {
-
-                }
                 return null;
             }
 
@@ -613,7 +666,7 @@ public class UsuariosFragment extends Fragment {
                                     Async_A_Get async_a_get = new Async_A_Get("Secretaria",id);
                                     async_a_get.execute();
                                 }else {
-                                    Alert(id,usuarios.getA_nombre(),usuarios.getA_Nombre_Usuario()
+                                    Alert(id,usuarios.getA_nombre(),usuarios.getA_apellido(),usuarios.getA_Nombre_Usuario()
                                             ,usuarios.getA_Facultad(),usuarios.getA_Nivel(),usuarios.getA_Lab(),usuarios.getA_Estado()).show();
                                 }
 
@@ -623,7 +676,7 @@ public class UsuariosFragment extends Fragment {
                         }
                         break;
                     default:
-                        Alert(id,usuarios.getA_nombre(),usuarios.getA_Nombre_Usuario()
+                        Alert(id,usuarios.getA_nombre(),usuarios.getA_apellido(),usuarios.getA_Nombre_Usuario()
                                 ,usuarios.getA_Facultad(),usuarios.getA_Nivel(),null,usuarios.getA_Estado()).show();
 
                         String us = usuarios.getA_Nombre_Usuario();

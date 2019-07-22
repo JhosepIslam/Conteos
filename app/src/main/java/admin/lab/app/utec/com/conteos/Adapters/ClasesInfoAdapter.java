@@ -64,7 +64,7 @@ public class ClasesInfoAdapter extends RecyclerView.Adapter<ClasesInfoAdapter.Vi
     }
 
     public static  class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtMateria,txtAula,txtDocente,txtHoras,txtDias,txtSeccion,txtIncritos,txtConteo;
+        private TextView txtMateria,txtAula,txtDocente,txtHoras,txtDias,txtSeccion,txtIncritos,txtConteo,txtFacultad,txtCiclo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +76,11 @@ public class ClasesInfoAdapter extends RecyclerView.Adapter<ClasesInfoAdapter.Vi
             this.txtSeccion = itemView.findViewById(R.id.txtSeccion);
             this.txtIncritos = itemView.findViewById(R.id.txtInscitos);
             this.txtConteo = itemView.findViewById(R.id.txtUltimoConteo);
+            this.txtFacultad = itemView.findViewById(R.id.txtFacultad);
+            this.txtCiclo = itemView.findViewById(R.id.txtCiclo);
+            this.txtFacultad.setVisibility(View.GONE);
+            this.txtCiclo.setVisibility(View.GONE);
+
 
         }
 

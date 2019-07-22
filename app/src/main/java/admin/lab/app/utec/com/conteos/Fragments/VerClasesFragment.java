@@ -170,7 +170,7 @@ public class VerClasesFragment extends Fragment {
                 recyclerView = getView().findViewById(R.id.recyclerViewMaterias);
                 layoutManager = new LinearLayoutManager(getContext());
 
-                myAdapter = new ConteosAdapter(clases.getID_CLASES(),clases.getINCRITOS(),clases.getMATERIAS(), clases.getAULAS(), clases.getDOCENTE(),
+                myAdapter = new ConteosAdapter(clases.getCICLO(),clases.getFACULTAD(),clases.getID_CLASES(),clases.getINCRITOS(),clases.getMATERIAS(), clases.getAULAS(), clases.getDOCENTE(),
                         clases.getHORA(), clases.getDIAS(), clases.getSECCION(),clases.getID_MATERIA_CONTRO(),clases.getCANTIDAD_CONTEO(),clases.getID_MATERIA_FALTA(),clases.getDETALLE(), R.layout.card_view_conteo, new ConteosAdapter.OnItemClickListener() {
                     @Override
                     public void OnItemClick(int id, int incritos, int Position) {

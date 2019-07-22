@@ -164,7 +164,7 @@ public class AgreagarUsuarioFragment extends Fragment {
 
 
                              break;
-                         case "SECRETARIA" :
+                         case "ASISTENTE" :
                              txtUsuario.setText("");
                              txtCarnet.setVisibility(View.GONE);
                              textViewLab.setVisibility(View.VISIBLE);
@@ -243,19 +243,23 @@ public class AgreagarUsuarioFragment extends Fragment {
                             }
                             break;
                         case "INSTRUCTOR":
-                        case "SECRETARIA":
+                        case "ASITENTE":
                         case "ADMIN_LAB":
                             Lab = spLab.getSelectedItem().toString();
                             if (ComprobarDatosNulos()){
                                 if (Nivel.equals("INSTRUCTOR")){
+                                    if(Usuario.length() <10){
+                                        txtCarnet.setError("No valido");
+                                    }else {
                                     SetAsync setAsync = new SetAsync(Nombre,Apellido,Usuario,
                                             Contraseña,Nivel,Facultad,Lab,true);
                                     setAsync.execute();
+                                    }
                                 }else {
                                     if (!util.ValidarCorreo(Usuario)){
                                         txtUsuario.setError("Nombre de Usuario  no Valido");
                                     }else {
-                                        if (Nivel.equals("SECRETARIA")){
+                                        if (Nivel.equals("ASISTENTE")){
                                             Lab="";
                                             Nivel = "ADMIN_LAB";
                                         }
@@ -287,7 +291,6 @@ public class AgreagarUsuarioFragment extends Fragment {
                             break;
 
                     }
-                    //AlertSave().show();
                 }
                 catch (Exception ex){}
             }
@@ -302,6 +305,8 @@ public class AgreagarUsuarioFragment extends Fragment {
     }
     private void changeFragment(Fragment fragment, String tag){
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment,tag).commit();
+
+
     }
 
     private AlertDialog  Alert(){
@@ -431,7 +436,7 @@ public class AgreagarUsuarioFragment extends Fragment {
             try{
                 ArrayList nivel;
                 nivel =  niveles.getNiveles();
-                nivel.add("SECRETARIA");
+                nivel.add("ASISTENTE");
                 final ArrayAdapter spinnerAdapterNiveles = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,nivel);
                 final ArrayAdapter spinnerAdapterFacultades = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, facultades.getFacultad());
                 final ArrayAdapter spinnerAdapterLaboratorios = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, laboratorios.getLaboratorio());

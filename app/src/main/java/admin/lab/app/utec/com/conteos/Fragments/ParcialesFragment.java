@@ -1,6 +1,7 @@
 package admin.lab.app.utec.com.conteos.Fragments;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -26,9 +29,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import admin.lab.app.utec.com.conteos.Activities.LoginActivity;
 import admin.lab.app.utec.com.conteos.Adapters.ParcialesAdapter;
@@ -39,6 +44,7 @@ import admin.lab.app.utec.com.conteos.R;
  * A simple {@link Fragment} subclass.
  */
 public class ParcialesFragment extends Fragment {
+    public final Calendar c = Calendar.getInstance();
 
     Parciales parciales = new Parciales();
     AlertDialog alertDialog;
@@ -48,7 +54,6 @@ public class ParcialesFragment extends Fragment {
     EditText editTextParcial;
     Spinner  spinnerCicloAgregar;
     ProgressDialog pDialog;
-    EditText editTextCiclo;
 
 
     private String usuario_;
@@ -88,7 +93,11 @@ public class ParcialesFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertInsertar().show();
+                try {
+                    AlertInsertar(Integer.parseInt(spinnerCiclo.getSelectedItem().toString())).show();
+
+                }catch (Exception ex){}
+
             }
         });
 
@@ -120,7 +129,7 @@ public class ParcialesFragment extends Fragment {
         });
 
     }
-    private AlertDialog AlertInsertar(){
+    private AlertDialog AlertInsertar(final int ID){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -132,10 +141,76 @@ public class ParcialesFragment extends Fragment {
          editTextInicio = v.findViewById(R.id.txtSetFecha_Inicio_Parcial);
          editTextFin  = v.findViewById(R.id.txtSetFecha_Fin_Parcial);
          editTextParcial = v.findViewById(R.id.txtSetNumerodeParcial);
-         spinnerCicloAgregar = v.findViewById(R.id.spinnerCiclo_Parcial);
+            editTextInicio.setInputType(InputType.TYPE_NULL);
+            editTextInicio.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            editTextFin.setInputType(InputType.TYPE_NULL);
+            editTextFin.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         Button btnEnviar = v.findViewById(R.id.btnSaveParcial);
         Button btnCancelar = v.findViewById(R.id.btnCancelParcial);
+        final DatePickerDialog.OnDateSetListener dateIni = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                int mes = monthOfYear+1;
+                if (dayOfMonth <= 9 &&  monthOfYear <=9) {
+                    editTextInicio.setText( year+"-0"+mes+"-0"+dayOfMonth);
+                } else if (dayOfMonth <= 9 ){
+                    editTextInicio.setText( year+"-"+mes+"-0"+dayOfMonth);
+                }else if (mes <=9){
+                    editTextInicio.setText( year+"-0"+mes+"-"+dayOfMonth);
+                }else {
+                    editTextInicio.setText( year+"-"+mes+"-"+dayOfMonth);
+                }
+
+            }
+
+        };
+        editTextInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getContext(), dateIni, c
+                        .get(Calendar.YEAR), c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        final DatePickerDialog.OnDateSetListener dateFin = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                int mes = monthOfYear+1;
+                if (dayOfMonth <= 9 &&  monthOfYear <=9) {
+                    editTextFin.setText( year+"-0"+mes+"-0"+dayOfMonth);
+                } else if (dayOfMonth <= 9 ){
+                    editTextFin.setText( year+"-"+mes+"-0"+dayOfMonth);
+                }else if (mes <=9){
+                    editTextFin.setText( year+"-0"+mes+"-"+dayOfMonth);
+                }else {
+                    editTextFin.setText( year+"-"+mes+"-"+dayOfMonth);
+                }
+
+            }
+
+        };
+        editTextFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getContext(), dateFin, c
+                        .get(Calendar.YEAR), c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,11 +241,10 @@ public class ParcialesFragment extends Fragment {
                     }else if (Parcial <= 0 || Parcial >5){
                         editTextParcial.setError("No se encuentra ese numero de Parcial");
                     }else {
-                         int Ciclo = Integer.parseInt(spinnerCicloAgregar.getSelectedItem().toString().trim());
                          Inicio = editTextInicio.getText().toString().trim();
                          Fin = editTextFin.getText().toString().trim();
                          Parcial = Integer.parseInt(editTextParcial.getText().toString().trim());
-                        AsyncSetParcial asyncSetParcial = new AsyncSetParcial(Inicio,Fin,Ciclo,Parcial);
+                        AsyncSetParcial asyncSetParcial = new AsyncSetParcial(Inicio,Fin,ID,Parcial);
                         asyncSetParcial.execute();
                     }
                 }
@@ -231,6 +305,73 @@ public class ParcialesFragment extends Fragment {
 
         editTextInicio = v.findViewById(R.id.txtNuevasFechaInicioParcial_Edit);
         editTextFin= v.findViewById(R.id.txtNuevasFechaFinParcial_Edit);
+        editTextInicio.setInputType(InputType.TYPE_NULL);
+        editTextInicio.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        editTextFin.setInputType(InputType.TYPE_NULL);
+        editTextFin.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        final DatePickerDialog.OnDateSetListener dateInicio = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                int mes = monthOfYear+1;
+                if (dayOfMonth <= 9 &&  monthOfYear <=9) {
+                    editTextInicio.setText( year+"-0"+mes+"-0"+dayOfMonth);
+                } else if (dayOfMonth <= 9 ){
+                    editTextInicio.setText( year+"-"+mes+"-0"+dayOfMonth);
+                }else if (mes <=9){
+                    editTextInicio.setText( year+"-0"+mes+"-"+dayOfMonth);
+                }else {
+                    editTextInicio.setText( year+"-"+mes+"-"+dayOfMonth);
+                }
+
+            }
+
+        };
+
+        final DatePickerDialog.OnDateSetListener dateFin = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                int mes = monthOfYear+1;
+                if (dayOfMonth <= 9 &&  monthOfYear <=9) {
+                    editTextFin.setText( year+"-0"+mes+"-0"+dayOfMonth);
+                } else if (dayOfMonth <= 9 ){
+                    editTextFin.setText( year+"-"+mes+"-0"+dayOfMonth);
+                }else if (mes <=9){
+                    editTextFin.setText( year+"-0"+mes+"-"+dayOfMonth);
+                }else {
+                    editTextFin.setText( year+"-"+mes+"-"+dayOfMonth);
+                }
+
+            }
+
+        };
+        editTextFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getContext(), dateFin, c
+                        .get(Calendar.YEAR), c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        editTextInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getContext(), dateInicio, c
+                        .get(Calendar.YEAR), c.get(Calendar.MONTH),
+                        c.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         final Spinner spinnerCicloNuevo = v.findViewById(R.id.SpinnerNuevoCicloParcial_Edit);
 
         Button btnEnviar = v.findViewById(R.id.btnEnviarParcial_dialog);
@@ -302,18 +443,7 @@ public class ParcialesFragment extends Fragment {
                     }else {
                         Fecha_Fin = editTextFin.getText().toString().trim();
                         Fecha_Inicio = editTextInicio.getText().toString().trim();
-                        switch (spinnerCicloNuevo.getSelectedItemPosition()){
-                            case 0:
-                                ciclo =(1);
-                                break;
-                            case 1:
-                                ciclo =(3);
-
-                                break;
-                            case  2:
-                                ciclo =(2);
-                                break;
-                        }
+                        ciclo =spinnerCicloNuevo.getSelectedItemPosition();
                         mod=true;
                     }
                 }
@@ -366,6 +496,11 @@ public class ParcialesFragment extends Fragment {
 
                 if (mod){
 
+                    if (ciclo ==2){
+                        ciclo =3;
+                    }else if (ciclo ==3){
+                        ciclo =2;
+                    }
                     AsyncUpdateParcial asyncUpdateParcial= new AsyncUpdateParcial(Fecha_Inicio,Fecha_Fin,ciclo,ID);
                     asyncUpdateParcial.execute();
 
@@ -584,11 +719,7 @@ public class ParcialesFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(getContext());
-            pDialog.setMessage("Pocesando...");
-            pDialog.setCancelable(true);
-            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pDialog.show();
+
         }
 
         @Override
@@ -623,8 +754,14 @@ public class ParcialesFragment extends Fragment {
                     Alert("Se Inserto Existosamente","Información",R.drawable.ic_info,resp).show();
                     break;
 
+
+
             }
-            pDialog.dismiss();
+            try {
+                AsyncGetParciales asyncGetParciales = new AsyncGetParciales(Integer.parseInt(spinnerCiclo.getSelectedItem().toString()));
+                asyncGetParciales.execute();
+            }catch (Exception e){}
+
         }
     }
     public class AsyncUpdateParcial extends AsyncTask<Void,Void,Boolean>{

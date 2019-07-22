@@ -194,14 +194,14 @@ public class PerfilFragment extends Fragment {
                 lab.setText("");
             }
             if (nivel_ == 3 || nivel_ == 5){
-                nombre.setText(usuarios.getA_nombre());
+                nombre.setText(usuarios.getA_nombre()+" "+usuarios.getA_apellido());
                 usuarioN.setText(usuarios.getA_Nombre_Usuario());
                 nivel.setText("Nivel: "+usuarios.getA_Nivel());
                 facultad.setText("Facultad: "+usuarios.getA_Facultad());
                 lab.setText("Laboratorio: "+usuarios.getA_Lab());
             }
             else {
-                nombre.setText(usuarios.getA_nombre());
+                nombre.setText(usuarios.getA_nombre()+" "+usuarios.getA_apellido());
                 usuarioN.setText(usuarios.getA_Nombre_Usuario());
                 nivel.setText("Nivel: "+usuarios.getA_Nivel());
                 facultad.setText("Facultad: "+usuarios.getA_Facultad());

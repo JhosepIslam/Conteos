@@ -36,6 +36,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import admin.lab.app.utec.com.conteos.Activities.MainActivity;
 import admin.lab.app.utec.com.conteos.Adapters.ConteosAdapter;
 import admin.lab.app.utec.com.conteos.Models.Clases;
 import admin.lab.app.utec.com.conteos.Models.Edificios;
@@ -95,6 +96,7 @@ public class AgregarConteoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         Toast.makeText(getContext(),"Toca la Clase para Insertar Conteo",Toast.LENGTH_LONG).show();
         shimmerFrameLayout = getView().findViewById(R.id.shimmerLayoutConteo);
         swipeRefreshLayout = getView().findViewById(R.id.refreshLayout);
@@ -106,6 +108,8 @@ public class AgregarConteoFragment extends Fragment {
 
         if (nivel_==4){
             LLfiltroEdificio.setVisibility(View.GONE);
+            Async_get_horas async_get_horas = new Async_get_horas("");
+            async_get_horas.execute();
         }
             Async_get_edif async_get_edif = new Async_get_edif();
             async_get_edif.execute();
@@ -555,8 +559,10 @@ public class AgregarConteoFragment extends Fragment {
                 recyclerView = getView().findViewById(R.id.recyclerView);
                 layoutManager = new LinearLayoutManager(getContext());
 
-                myAdapter = new ConteosAdapter(clases.getID_CLASES(),clases.getINCRITOS(),clases.getMATERIAS(), clases.getAULAS(), clases.getDOCENTE(),
-                        clases.getHORA(), clases.getDIAS(), clases.getSECCION(),clases.getID_MATERIA_CONTRO(),clases.getCANTIDAD_CONTEO(),clases.getID_MATERIA_FALTA(),clases.getDETALLE(), R.layout.card_view_conteo, new ConteosAdapter.OnItemClickListener() {
+                myAdapter = new ConteosAdapter(clases.getCICLO(),clases.getFACULTAD(),clases.getID_CLASES(),clases.getINCRITOS(),clases.getMATERIAS(), clases.getAULAS(), clases.getDOCENTE(),
+                        clases.getHORA(), clases.getDIAS(), clases.getSECCION(),clases.getID_MATERIA_CONTRO(),
+                        clases.getCANTIDAD_CONTEO(),clases.getID_MATERIA_FALTA(),clases.getDETALLE(),
+                        R.layout.card_view_conteo, new ConteosAdapter.OnItemClickListener() {
                     @Override
                     public void OnItemClick(int id, int incritos, int Position) {
 
@@ -713,8 +719,13 @@ public class AgregarConteoFragment extends Fragment {
             }else {
                 Toast.makeText(getContext(),"No se insertó la Inasistencia",Toast.LENGTH_SHORT).show();
             }
-            Async_get_Clases async_get_clases = new Async_get_Clases(spinnerEdificios.getSelectedItem().toString(),spinnerHoras.getSelectedItem().toString());
-            async_get_clases.execute();
+            if (nivel_ != 4) {
+                Async_get_Clases async_get_clases = new Async_get_Clases(spinnerEdificios.getSelectedItem().toString(), spinnerHoras.getSelectedItem().toString());
+                async_get_clases.execute();
+            }else {
+                Async_get_Clases async_get_clases = new Async_get_Clases("", spinnerHoras.getSelectedItem().toString());
+                async_get_clases.execute();
+            }
         }
     }
     public class Async_Conteo_set extends AsyncTask<Void,Void,Boolean> {

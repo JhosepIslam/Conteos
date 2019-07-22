@@ -21,7 +21,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -41,6 +43,7 @@ public class Ver_Info_ConteosFragment extends Fragment {
     Facultades facultades = new Facultades();
     private Spinner SpFacultad,SpTipo;
     Clases clases = new Clases();
+    private LinearLayout LLFacultad;
     EditText editTextFiltroHora, editTextFiltroFecha;
 
     private RecyclerView recyclerView;
@@ -53,6 +56,9 @@ public class Ver_Info_ConteosFragment extends Fragment {
     final int mes = c.get(Calendar.MONTH)+1;
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
+    private int nivel_;
+    private String usuario_;
+
     public Ver_Info_ConteosFragment() {
         // Required empty public constructor
     }
@@ -62,6 +68,8 @@ public class Ver_Info_ConteosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        usuario_= getArguments().getString("usuario");
+        nivel_= Integer.parseInt(getArguments().getString("nivel"));
         return inflater.inflate(R.layout.fragment_ver__info__conteos, container, false);
     }
 
@@ -74,6 +82,10 @@ public class Ver_Info_ConteosFragment extends Fragment {
         SpTipo = getView().findViewById(R.id.spinnerTipoFiltro);
         editTextFiltroHora= getView().findViewById(R.id.txtFiltroHora);
         editTextFiltroFecha= getView().findViewById(R.id.txtFiltroFecha);
+        LLFacultad= getView().findViewById(R.id.LLFacultad);
+        if (nivel_ == 3){
+            LLFacultad.setVisibility(View.GONE);
+        }
         editTextFiltroHora.setInputType(InputType.TYPE_NULL);
         editTextFiltroFecha.setInputType(InputType.TYPE_NULL);
         editTextFiltroFecha.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -207,7 +219,11 @@ public class Ver_Info_ConteosFragment extends Fragment {
         try {
             String fecha = editTextFiltroFecha.getText().toString().trim();
             String hora = editTextFiltroHora.getText().toString().trim();
-            String facultad = SpFacultad.getSelectedItem().toString().trim();
+            String facultad= null;
+            if (nivel_ !=3){
+                 facultad= SpFacultad.getSelectedItem().toString().trim();
+            }
+
             int tipo = SpTipo.getSelectedItemPosition();
 
             Async_get_Clases async_get_clases = new Async_get_Clases(tipo,fecha,facultad,hora);
@@ -260,13 +276,13 @@ public class Ver_Info_ConteosFragment extends Fragment {
 
 
                 case 0:
-                    clases.Get_Clases_Contadas_FromServer(Fecha,Hora,Facultad);
+                    clases.Get_Clases_Contadas_FromServer(Fecha,Hora,Facultad,nivel_,usuario_);
                     break;
                 case 1:
-                    clases.Get_Clases_Sin_Contar_FromServer(Fecha,Hora,Facultad);
+                    clases.Get_Clases_Sin_Contar_FromServer(Fecha,Hora,Facultad,nivel_,usuario_);
                     break;
                 case 2:
-                    clases.Get_Clases_Con_Falta_FromServer(Fecha,Hora,Facultad);
+                    clases.Get_Clases_Con_Falta_FromServer(Fecha,Hora,Facultad,nivel_,usuario_);
                     break;
             }
             return null;

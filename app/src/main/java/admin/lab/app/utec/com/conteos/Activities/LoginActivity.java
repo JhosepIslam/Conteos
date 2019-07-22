@@ -274,7 +274,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
                 if (resul==-2){
-                    Toast.makeText(getApplicationContext(),"No se Puede Recordar Iniciar Con este Codigo",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No se Puede  Iniciar Con este Codigo",Toast.LENGTH_SHORT).show();
                 }
                 if (flag) {
                     String thiPass = login.getPass();

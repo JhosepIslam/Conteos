@@ -17,15 +17,15 @@ import admin.lab.app.utec.com.conteos.R;
 
 public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHolder> {
 
-    private List<String> Materia,Aula,Docente,Horas,Dias,Seccion,Id_clase,Inscritos;
+    private List<String> Materia,Aula,Docente,Horas,Dias,Seccion,Id_clase,Inscritos,Facultad,Ciclo;
     ArrayList ID_materia_contada,cantiadad_contada,Id_materia_falta,detalle;
     private OnItemClickListener itemClickListener;
     private int layout;
 
-    public ConteosAdapter(List<String> Id_clase,List<String> Inscritos,List<String> Materia,List<String> Aula,List<String>
+    public ConteosAdapter(List<String> Ciclo,List<String> Facultad,List<String> Id_clase,List<String> Inscritos,List<String> Materia,List<String> Aula,List<String>
             Docente,List<String> Horas,List<String> Dias,List<String> Seccion,ArrayList ID_materia_contada,ArrayList cantiadad_contada,ArrayList Id_materia_falta,ArrayList detalle,
                           int layout, OnItemClickListener ItemClickListener){
-        
+        this.Ciclo = Ciclo;
         this.Materia=Materia;
         this.Aula =Aula ;
         this.Docente=Docente;
@@ -40,6 +40,7 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
         this.itemClickListener=ItemClickListener;
         this.detalle = detalle;
         this.Id_materia_falta = Id_materia_falta;
+        this.Facultad = Facultad;
     }
     @NonNull
     @Override
@@ -54,7 +55,7 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
-        viewHolder.bind(Integer.parseInt(Id_clase.get(position)),Integer.parseInt(Inscritos.get(position)),Materia.get(position),Aula.get(position),
+        viewHolder.bind(Ciclo.get(position),Facultad.get(position),Integer.parseInt(Id_clase.get(position)),Integer.parseInt(Inscritos.get(position)),Materia.get(position),Aula.get(position),
                 Docente.get(position),Horas.get(position),Dias.get(position),Seccion.get(position),ID_materia_contada,cantiadad_contada,detalle,Id_materia_falta,itemClickListener);
     }
     @Override
@@ -67,7 +68,7 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
         }
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtMateria,txtAula,txtDocente,txtHoras,txtDias,txtSeccion,txtIncritos,txtConteo;
+        public TextView txtMateria,txtAula,txtDocente,txtHoras,txtDias,txtSeccion,txtIncritos,txtConteo,txtFacultad,txtCiclo;
 
 
         public  ViewHolder(View view){
@@ -80,9 +81,12 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
             this.txtSeccion = view.findViewById(R.id.txtSeccion);
             this.txtIncritos = view.findViewById(R.id.txtInscitos);
             this.txtConteo = view.findViewById(R.id.txtUltimoConteo);
+            this.txtFacultad = view.findViewById(R.id.txtFacultad);
+            this.txtCiclo = view.findViewById(R.id.txtCiclo);
+
         }
 
-        public void bind(final int id, final int inscritos , final String Materia, final String Aula, final String Docente,
+        public void bind(final String ciclo,final String facultad,final int id, final int inscritos , final String Materia, final String Aula, final String Docente,
                          final String Horas, final String Dias, final String Seccion, final ArrayList ID_materia_contada ,final ArrayList Cantidad ,final ArrayList Detalle, final ArrayList ID_Materia_falta ,
                          final OnItemClickListener listener ){
             this.txtMateria.setText("Materia: "+Materia);
@@ -91,7 +95,9 @@ public class ConteosAdapter extends RecyclerView.Adapter<ConteosAdapter.ViewHold
             this.txtHoras .setText("Horas: "+Horas);
             this.txtDias.setText("Dias:"+Dias);
             this.txtSeccion.setText("Seccion:"+Seccion);
+            this.txtFacultad.setText("Facultad: "+facultad);
             this.txtIncritos.setText("Inscritos: "+inscritos);
+            this.txtCiclo.setText("Ciclo: "+ciclo);
             try {
                 int index = ID_materia_contada.indexOf(""+id);
                 int indexF = ID_Materia_falta.indexOf(""+id);

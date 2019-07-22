@@ -15,8 +15,12 @@ public class Usuarios {
     private  String METHOD_NAME ;
     private   String SOAP_ACTION;
     private ArrayList NOMBRE,NOMBRE_USUARIO,ID_USUARIO,NIVEL,FACULTAD, ESTADO;
-    private String A_nombre, A_Nombre_Usuario,A_Nivel, A_Facultad ,A_Clave, A_Lab , A_Estado;
+    private String A_nombre,A_apellido, A_Nombre_Usuario,A_Nivel, A_Facultad ,A_Clave, A_Lab , A_Estado;
     Conexion conexion = new Conexion();
+
+    public String getA_apellido() {
+        return A_apellido;
+    }
 
     public ArrayList getESTADO() {
         return ESTADO;
@@ -166,6 +170,7 @@ public class Usuarios {
         A_Facultad="";
         A_Nivel="";
         A_Estado="";
+        A_apellido ="";
 
         try {
             transport.call(SOAP_ACTION, envelope);
@@ -184,13 +189,13 @@ public class Usuarios {
                 A_Facultad = v.getString("FACULTAD");
                 A_Nivel = v.getString("TIPO");
                 A_Estado = v.getString("ESTADO");
+                A_apellido = v.getString("APELLIDO");
                 if (A_Estado =="1"){
                     A_Estado = "Activo";
                 }else A_Estado="Inactivo";
             }
         }
         catch (Exception ex){
-
             Log.d("error",ex.getMessage());
         }
     }
@@ -297,6 +302,7 @@ public class Usuarios {
                 A_Facultad = v.getString("FACULTAD");
                 A_Nivel = v.getString("TIPO");
                 A_Lab= v.getString("LABORATORIO");
+                A_apellido = v.getString("APELLIDO");
                 A_Estado = v.getString("ESTADO");
                 if (A_Estado =="1"){
                     A_Estado = "Activo";

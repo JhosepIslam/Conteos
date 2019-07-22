@@ -154,6 +154,39 @@ public class Modificaciones {
             return false;
         }
     }
+
+
+
+    public boolean UpdateNombre(int usuario_update, String Nombre, String Apellido,String Usuario){
+        METHOD_NAME="Update_nombre_apellido_usuario";
+        SOAP_ACTION="http://apoyo.conteoutec.org/Update_nombre_apellido_usuario";
+
+
+        HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+        SoapObject request = new SoapObject(conexion.getNAMESPACE(),METHOD_NAME);
+        request.addProperty("id_usuario_update",usuario_update);
+        request.addProperty("nombre",Nombre);
+        request.addProperty("apellido",Apellido);
+        request.addProperty("usuario",Usuario);
+
+        envelope.dotNet=true;
+        envelope.bodyOut=request;
+        envelope.setOutputSoapObject(request);
+
+        try {
+            transport.call(SOAP_ACTION, envelope);
+            SoapPrimitive respSoap = (SoapPrimitive) envelope.getResponse();
+
+
+            return Boolean.parseBoolean(respSoap.toString());
+
+        }
+        catch (Exception ex){
+            return false;
+        }
+    }
 }
 
 

@@ -19,9 +19,9 @@ public class Clases {
     Conexion conexion = new Conexion();
     private int cantida,  id_conteo;
     String nivel;
-    private  ArrayList HORAS_CLASES;
+    private  ArrayList HORAS_CLASES,FACULTAD;
 
-    private  ArrayList ID_CLASES, MATERIAS, CODIGO, DOCENTE, AULAS, EDIFICIO,
+    private  ArrayList ID_CLASES, MATERIAS, CODIGO, DOCENTE, AULAS, EDIFICIO,CICLO,
                         DIAS, SECCION, INCRITOS, HORA ,ID_MATERIA_CONTRO ,CANTIDAD_CONTEO,ID_MATERIA_FALTA ,DETALLE;
 
     public ArrayList getID_MATERIA_FALTA() {
@@ -30,6 +30,14 @@ public class Clases {
 
     public void setID_MATERIA_FALTA(ArrayList ID_MATERIA_FALTA) {
         this.ID_MATERIA_FALTA = ID_MATERIA_FALTA;
+    }
+
+    public ArrayList getCICLO() {
+        return CICLO;
+    }
+
+    public void setCICLO(ArrayList CICLO) {
+        this.CICLO = CICLO;
     }
 
     public ArrayList getDETALLE() {
@@ -126,6 +134,14 @@ public class Clases {
 
     public ArrayList getCODIGO() {
         return CODIGO;
+    }
+
+    public ArrayList getFACULTAD() {
+        return FACULTAD;
+    }
+
+    public void setFACULTAD(ArrayList FACULTAD) {
+        this.FACULTAD = FACULTAD;
     }
 
     public void setCODIGO(ArrayList CODIGO) {
@@ -236,6 +252,8 @@ public class Clases {
             ArrayList Secciones = new ArrayList<String>();
             ArrayList Inscritos = new ArrayList<String>();
             ArrayList Horas = new ArrayList<String>();
+            ArrayList Facultades = new ArrayList<String>();
+            ArrayList Ciclos = new ArrayList<String>();
 
             try {
                 if (length <=0){
@@ -250,7 +268,7 @@ public class Clases {
                     SECCION.clear();
                     INCRITOS.clear();
                     HORA.clear();
-
+                    FACULTAD.clear();
                 }
             }catch (Exception ex){}
 
@@ -268,6 +286,10 @@ public class Clases {
                 String inscritos = v.getString("NUM_INSCRITOS");
                 String hora_inicio = v.getString("HORA_INICIO");
                 String hora_final = v.getString("HORA_FIN");
+                String facultad = v.getString("FACULTAD");
+                Ciclos.add(v.getString("CICLO"));
+
+
 
                 if (!id_clase.isEmpty() && id_clase !=null){
                     IdClases.add(id_clase);
@@ -280,12 +302,15 @@ public class Clases {
                     Secciones.add(seccion);
                     Inscritos.add(inscritos);
                     Horas.add(hora_inicio.substring(0,5)+"-"+hora_final.substring(0,5));
+                    Facultades.add(facultad);
 
                 }
+                setCICLO(Ciclos);
                 setID_CLASES(IdClases);
                 setMATERIAS(Materias);
                 setCODIGO(Codigo);
                 setDOCENTE(Docente);
+                setFACULTAD(Facultades);
                 setAULAS(Aulas);
                 setEDIFICIO(Edificios);
                 setDIAS(Dias);
@@ -334,6 +359,7 @@ public class Clases {
             ArrayList Horas = new ArrayList<String>();
             ArrayList Escuelas = new ArrayList();
             ArrayList Facultades = new ArrayList<String>();
+            ArrayList Ciclos = new ArrayList<String>();
             if (length <=0){
                 ID_CLASES.clear();
                 MATERIAS.clear();
@@ -364,6 +390,7 @@ public class Clases {
                 String hora_final = v.getString("HORA_FIN");
                 String escuela = v.getString("ESCUELA");
                 String facultad = v.getString("FACULTAD");
+                Ciclos.add( v.getString("CICLO"));
                 if (!id_clase.isEmpty() && id_clase !=null){
                     IdClases.add(id_clase);
                     Materias.add(materia);
@@ -378,6 +405,7 @@ public class Clases {
                     Escuelas.add(escuela);
                     Facultades.add(facultad);
                 }
+                setCICLO(Ciclos);
                 setID_CLASES(IdClases);
                 setMATERIAS(Materias);
                 setCODIGO(Codigo);
@@ -388,6 +416,7 @@ public class Clases {
                 setSECCION(Secciones);
                 setINCRITOS(Inscritos);
                 setHORA(Horas);
+                setFACULTAD(Facultades);
 
             }
         }
@@ -763,8 +792,15 @@ public class Clases {
             return false;
         }
     }
-    public void  Get_Clases_Contadas_FromServer(String Fecha, String Hora,String Facultad){
-        int facultad_id=Integer.parseInt(Facultad.substring(0,1));
+    public void  Get_Clases_Contadas_FromServer(String Fecha, String Hora,String Facultad,int nivel, String usuario){
+        int facultad_id=0;
+        if (nivel == 3){
+            Facultades facultades = new Facultades();
+            facultad_id=facultades.get_facultad(usuario);
+        }else{
+            facultad_id =Integer.parseInt(Facultad.substring(0,1));
+        }
+
         HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 
@@ -866,8 +902,14 @@ public class Clases {
             Log.d("error",ex.getMessage());
         }
     }
-    public void  Get_Clases_Sin_Contar_FromServer(String Fecha, String Hora,String Facultad){
-        int facultad_id=Integer.parseInt(Facultad.substring(0,1));
+    public void  Get_Clases_Sin_Contar_FromServer(String Fecha, String Hora,String Facultad,int nivel, String usuario){
+        int facultad_id=0;
+        if (nivel == 3){
+            Facultades facultades = new Facultades();
+            facultad_id=facultades.get_facultad(usuario);
+        }else{
+            facultad_id =Integer.parseInt(Facultad.substring(0,1));
+        }
         HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 
@@ -969,8 +1011,14 @@ public class Clases {
             Log.d("error",ex.getMessage());
         }
     }
-    public void  Get_Clases_Con_Falta_FromServer(String Fecha, String Hora,String Facultad){
-        int facultad_id=Integer.parseInt(Facultad.substring(0,1));
+    public void  Get_Clases_Con_Falta_FromServer(String Fecha, String Hora,String Facultad, int nivel, String usuario){
+        int facultad_id=0;
+        if (nivel == 3){
+            Facultades facultades = new Facultades();
+            facultad_id=facultades.get_facultad(usuario);
+        }else{
+            facultad_id =Integer.parseInt(Facultad.substring(0,1));
+        }
         HttpTransportSE transport = new HttpTransportSE(conexion.getURL());
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 
@@ -1112,7 +1160,9 @@ public class Clases {
             ArrayList Secciones = new ArrayList<String>();
             ArrayList Inscritos = new ArrayList<String>();
             ArrayList Horas = new ArrayList<String>();
+            ArrayList Ciclos = new ArrayList<String>();
 
+            ArrayList Facultades = new ArrayList<String>();
             try {
                 if (length <=0){
                     ID_CLASES.clear();
@@ -1145,6 +1195,9 @@ public class Clases {
                 String hora_inicio = v.getString("HORA_INICIO");
                 String hora_final = v.getString("HORA_FIN");
 
+                String facultad = v.getString("FACULTAD");
+                Ciclos.add( v.getString("CICLO"));
+
                 if (!id_clase.isEmpty() && id_clase !=null){
                     IdClases.add(id_clase);
                     Materias.add(materia);
@@ -1154,6 +1207,7 @@ public class Clases {
                     Edificios.add(edificio);
                     Dias.add(dia);
                     Secciones.add(seccion);
+                    Facultades.add(facultad);
                     Inscritos.add(inscritos);
                     Horas.add(hora_inicio.substring(0,5)+"-"+hora_final.substring(0,5));
 
@@ -1162,12 +1216,14 @@ public class Clases {
                 setMATERIAS(Materias);
                 setCODIGO(Codigo);
                 setDOCENTE(Docente);
+                setFACULTAD(Facultades);
                 setAULAS(Aulas);
                 setEDIFICIO(Edificios);
                 setDIAS(Dias);
                 setSECCION(Secciones);
                 setINCRITOS(Inscritos);
                 setHORA(Horas);
+                setCICLO(Ciclos);
 
             }
         }
